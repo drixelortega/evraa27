@@ -29,6 +29,29 @@
   tick();
   timer = setInterval(tick, 1000);
 
+  // ---------- Important announcements ----------
+  // Announcements ticked “Push to Home” on the admin page (push: true in data-live.js) stand out above the section cards
+  const pushed = ANNOUNCEMENTS.filter((a) => a.push);
+  if (pushed.length) {
+    const external = (link) => /^https?:/.test(link);
+    const megaphone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19.5 5.5a9 9 0 0 1 0 13"/></svg>';
+    $('home-alerts').innerHTML = pushed.map((a, i) => {
+      const [label, href] = a.link || ['See all announcements', 'evraa/announcements.html'];
+      const out = external(href);
+      return `
+      <article class="home-alert" style="--i: ${i}">
+        <span class="home-alert-icon">${megaphone}</span>
+        <div class="home-alert-text">
+          <div class="home-alert-meta"><span class="home-alert-flag">Important</span><span class="home-alert-tag">${esc(a.tag)}</span>${a.date ? `<span class="home-alert-date">${esc(a.date)}</span>` : ''}</div>
+          <h2>${esc(a.title)}</h2>
+          ${a.body ? `<p>${esc(a.body)}</p>` : ''}
+          <a class="home-alert-link" href="${esc(out ? href : url(href))}"${out ? ' target="_blank" rel="noopener"' : ''}>${esc(label)} <span aria-hidden="true">→</span></a>
+        </div>
+      </article>`;
+    }).join('');
+    $('home-alerts').hidden = false;
+  }
+
   // ---------- Section cards ----------
   // The icon and accent colour of each page are in site.js; this adds a short live summary. A page added to MENU gets a card too
   const venues = new Set(SPORTS.flatMap(([, list]) => list.map(([name]) => name))).size;

@@ -44,12 +44,14 @@ const ROLE_TABS = [
 
 // The tables. Each column: [label, type, maximum length, required, hint].
 // Types: text, textarea, date, number, accent (a colour), link (a page on this site or an https address), sport (one of SPORTS in data.js),
-// team (one of the delegations in the Medal Tally table; the two team columns are shown together as “VS”)
+// team (one of the delegations in the Medal Tally table; the two team columns are shown together as “VS”),
+// checkbox (ticked = '1', not ticked = '')
 const TABLES = [
     'announcements' => [
         'title' => 'Announcements',
-        'help' => 'Newest first. The tag “New” is highlighted, and a new first announcement brings back the dot on the Home page card.',
+        'help' => 'Newest first. The tag “New” is highlighted, and a new first announcement brings back the dot on the Home page card. Tick “Push to Home” to also show an announcement as a highlighted alert at the top of the Home page; untick it to take it down.',
         'columns' => [
+            'push' => ['Push to Home', 'checkbox', 1, false, ''],
             'tag' => ['Tag', 'text', 30, true, 'New, Pinned, Advisory…'],
             'date' => ['Date shown', 'text', 40, false, 'e.g. March 1, 2027'],
             'title' => ['Title', 'text', 160, true, ''],
@@ -303,7 +305,7 @@ function check_rows(string $table, mixed $input): array
         $blank = true;
         foreach ($columns as $col => [$label, $type, $max, $required]) {
             $value = is_string($raw[$col] ?? null) ? trim(preg_replace('/\s+/u', ' ', $raw[$col]) ?? '') : '';
-            if ($value !== '' && !in_array($type, ['accent', 'number', 'sport', 'team'], true)) {
+            if ($value !== '' && !in_array($type, ['accent', 'number', 'sport', 'team', 'checkbox'], true)) {
                 $blank = false;
             }
             $row[$col] = $value;
@@ -315,7 +317,9 @@ function check_rows(string $table, mixed $input): array
         foreach ($columns as $col => [$label, $type, $max, $required]) {
             $value = $row[$col];
             $problem = '';
-            if ($type === 'number') {
+            if ($type === 'checkbox') {
+                $row[$col] = $value === '' ? '' : '1';
+            } elseif ($type === 'number') {
                 $value = $value === '' ? '0' : $value;
                 if (!preg_match('/^\d{1,4}$/', $value)) {
                     $problem = "$label must be a whole number from 0 to 9999.";
@@ -363,7 +367,11 @@ function publish(PDO $pdo): void
         if ($a['link_label'] !== '' && $a['link_url'] !== '') {
             $item['link'] = [$a['link_label'], $a['link_url']];
         }
-        return $item + ['accent' => $a['accent']];
+        $item['accent'] = $a['accent'];
+        if ($a['push'] === '1') {
+            $item['push'] = true;   // also shown as a highlighted alert on the Home page
+        }
+        return $item;
     }, read_rows($pdo, 'announcements'));
 
     $schedule = [];
@@ -384,7 +392,7 @@ function publish(PDO $pdo): void
         }
         $js .= ($object ? '}' : ']') . ";\n\n";
     };
-    $block('Announcements page, newest first', 'ANNOUNCEMENTS', $announcements);
+    $block('Announcements page, newest first (push: true = also highlighted at the top of the Home page)', 'ANNOUNCEMENTS', $announcements);
     $block('Game schedule per sport: [date, time, what\'s on, team, versus team] (the teams are empty for events without opposing teams)', 'SCHEDULE', $schedule, true);
     $block('Directory → Directions / Locations: name, description, Google Maps search, accent colour', 'PLACES', $lists('places'));
     $block('Directory → Hotlines: label, number (empty = to be announced), accent colour', 'HOTLINES', $lists('hotlines'));

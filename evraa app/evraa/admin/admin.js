@@ -51,7 +51,7 @@
       changed();
       row.classList.add('is-new');
       row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      const first = row.querySelector('input:not([type="number"]), textarea, select');
+      const first = row.querySelector('input:not([type="number"]):not([type="checkbox"]), textarea, select');
       if (first) first.focus({ preventScroll: true });
     });
 
@@ -60,7 +60,7 @@
       if (!button) return;
       const row = button.closest('tr');
       if (button.hasAttribute('data-remove')) {
-        const filled = [...row.querySelectorAll('input:not([type="number"]), textarea')].some((input) => input.value.trim() !== '');
+        const filled = [...row.querySelectorAll('input:not([type="number"]):not([type="checkbox"]), textarea')].some((input) => input.value.trim() !== '');
         if (filled && !window.confirm('Remove this row? It is deleted when you save.')) return;
         row.remove();
       } else if (button.dataset.move) {
@@ -78,7 +78,7 @@
       renumber();
       // Point out the first empty required field instead of sending the form
       const missing = [...body.querySelectorAll('[required]')].find((input) => {
-        const rowHasText = [...input.closest('tr').querySelectorAll('input:not([type="number"]), textarea')].some((field) => field.value.trim() !== '');
+        const rowHasText = [...input.closest('tr').querySelectorAll('input:not([type="number"]):not([type="checkbox"]), textarea')].some((field) => field.value.trim() !== '');
         return rowHasText && !input.value.trim();
       });
       if (missing) {

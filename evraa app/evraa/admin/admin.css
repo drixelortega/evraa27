@@ -86,6 +86,13 @@ input:focus, select:focus, textarea:focus { border-color: var(--green); outline:
 .th-date, .cell-date { width: 160px; }
 .th-accent, .cell-accent { width: 116px; }
 .th-sport, .cell-sport { width: 190px; }
+/* Push to Home: a tick box that lights the whole row up when ticked */
+.th-checkbox, .cell-checkbox { width: 96px; }
+.switch { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px 0 10px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--field); color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; user-select: none; }
+.switch input { width: 18px; min-height: 0; height: 18px; margin: 0; padding: 0; accent-color: var(--flame); cursor: pointer; }
+.switch:has(input:checked) { border-color: var(--flame); background: var(--flame); color: #fff; }
+.switch:has(input:focus-visible) { outline: 3px solid rgba(239, 106, 31, .35); }
+.grid tr:has(.switch input:checked) td { background: var(--warn-bg); }
 .th-textarea { min-width: 240px; }
 .cell-team { width: 170px; }
 .cell-team.has-vs { width: 200px; }
@@ -131,6 +138,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--green); outline:
   .vs { display: none; }
   .has-vs select { width: 100%; }
   .grid td.cell-tools { flex: 1 1 100%; }
+  .grid tr:has(.switch input:checked) { border-color: var(--flame); background: var(--warn-bg); }
+  .grid tr:has(.switch input:checked) td { background: none; }
   .tools { justify-content: flex-end; }
   .tool { width: 44px; height: 40px; }
   .actions .btn { flex: 1 1 auto; }

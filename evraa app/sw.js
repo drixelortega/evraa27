@@ -4,7 +4,7 @@
 // - Styles, scripts and images are shown from the saved copy at once and refreshed in the background.
 // - The admin page and anything PHP is never saved or intercepted.
 // Change VERSION after uploading new files if phones should drop their saved copies right away.
-const VERSION = 'evraa-v1';
+const VERSION = 'evraa-v2';
 const PAGES = `${VERSION}-pages`;
 const ASSETS = `${VERSION}-assets`;
 const ROOT = new URL('./', self.location).pathname;

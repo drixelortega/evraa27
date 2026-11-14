@@ -14,15 +14,15 @@
   <title>EVRAA 2027 | Calbayog </title>
   <link rel="icon" href="evraa/images/icons/favicon-32.png" sizes="32x32">
   <link rel="icon" href="evraa/images/icons/icon-192.png" sizes="192x192">
-  <link rel="stylesheet" href="evraa/assets/site.css?v=20261118">
+  <link rel="stylesheet" href="evraa/assets/site.css?v=20261115b">
 </head>
 <!-- Home page: the animated logo, the countdown, and a card for each section (drawn by evraa/assets/home.js from the menu in site.js).
      The other pages are in the evraa folder; the billeting schools are on evraa/billeting.html. -->
 <body data-page="home" data-root="">
   <main class="shell">
-    <script src="evraa/assets/data.js?v=20261118"></script>
+    <script src="evraa/assets/data.js?v=20261115b"></script>
     <script>document.write('<script src="evraa/assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
-    <script src="evraa/assets/site.js?v=20261118"></script>
+    <script src="evraa/assets/site.js?v=20261115b"></script>
 
     <!-- The logo and the countdown share one row -->
     <div class="home-top">
@@ -48,6 +48,9 @@
     </section>
     </div>
 
+    <!-- Important announcements: the ones ticked “Push to Home” on the admin page (drawn by evraa/assets/home.js) -->
+    <section class="home-alerts" id="home-alerts" aria-label="Important announcements" hidden></section>
+
     <nav aria-label="Sections">
       <ul class="tab-cards" id="tab-cards"></ul>
     </nav>
@@ -62,6 +65,6 @@
       <div class="logo-carousel" id="logo-carousel"></div>
     </section>
   </main>
-  <script src="evraa/assets/home.js?v=20261118"></script>
+  <script src="evraa/assets/home.js?v=20261115b"></script>
 </body>
 </html>

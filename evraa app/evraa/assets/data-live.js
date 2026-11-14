@@ -1,10 +1,11 @@
 // EVRAA 2027 content managed on the admin page (evraa/admin). This file is rewritten on every save there:
 // do not edit it by hand, your changes would be lost. The other lists (sports and venues, billeting schools, logos) are in data.js.
-// Last saved: November 13, 2026 2:43 AM (Philippine time)
+// Last saved: November 15, 2026 1:34 AM (Philippine time)
 
-// Announcements page, newest first
+// Announcements page, newest first (push: true = also highlighted at the top of the Home page)
 const ANNOUNCEMENTS = [
-  {"tag":"EVRAA 2027 Application","title":"Download the Official EVRAA 2027 Application now!","body":"","accent":"var(--green)"},
+  {"tag":"Test Announcement","title":"Testing of the Site","body":"","accent":"var(--flame)"},
+  {"tag":"EVRAA 2027 Application","title":"Download the Official EVRAA 2027 Application now!","body":"","accent":"var(--green)","push":true},
   {"tag":"New","date":"October 13, 2026","title":"New on the site: Directory, Medal Tally, Games and Special Events","body":"Schedules, playing venues, hotlines and more will be posted in these sections as committees confirm them.","accent":"var(--flame)"},
   {"tag":"Pinned","title":"EVRAA 2027 runs March 31 – April 5, 2027","body":"Calbayog City and Catbalogan City are hosting this year's Eastern Visayas Regional Athletic Association meet.","accent":"var(--gold)"},
   {"tag":"Billeting","title":"14 billeting schools in Calbayog City","body":"Delegations will stay in 14 schools across Calbayog City. See the list and map on the Billeting Areas page.","link":["See the billeting schools","evraa/billeting.html"],"accent":"var(--teal)"},

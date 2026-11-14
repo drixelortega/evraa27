@@ -129,6 +129,7 @@ function field(string $table, int|string $i, string $col, array $spec, mixed $va
         'textarea' => "<textarea $common rows=\"2\" maxlength=\"$max\" placeholder=\"" . e($hint) . '">' . e($value) . '</textarea>',
         'number' => "<input $common type=\"number\" inputmode=\"numeric\" min=\"0\" max=\"9999\" step=\"1\" value=\"" . e($value === '' ? '0' : $value) . '">',
         'date' => "<input $common type=\"date\" value=\"" . e($value) . '"' . ($required ? ' required' : '') . '>',
+        'checkbox' => "<label class=\"switch\"><input $common type=\"checkbox\" value=\"1\"" . ($value !== '' ? ' checked' : '') . '><span>Home</span></label>',
         'accent' => "<select $common>" . implode('', array_map(
             fn ($key, $text) => '<option value="' . e($key) . '"' . ($key === $value ? ' selected' : '') . '>' . e($text) . '</option>',
             array_keys(ACCENT_CHOICES), ACCENT_CHOICES)) . '</select>',
@@ -139,7 +140,7 @@ function field(string $table, int|string $i, string $col, array $spec, mixed $va
             array_values(array_unique([...team_names(), ...($value !== '' ? [$value] : [])])))) . '</select>',
         default => "<input $common type=\"" . ($type === 'email' ? 'email' : 'text') . "\" maxlength=\"$max\" value=\"" . e($value) . '" placeholder="' . e($hint) . '"' . ($required ? ' required' : '') . '>',
     };
-    $short = in_array($type, ['number', 'date', 'accent'], true) ? ' is-short' : '';
+    $short = in_array($type, ['number', 'date', 'accent', 'checkbox'], true) ? ' is-short' : '';
     // The second team of a game follows a small “vs”
     $vs = $col === 'team_b' ? '<span class="vs" aria-hidden="true">vs</span>' : '';
     return '<td class="cell cell-' . e($type) . $short . ($vs ? ' has-vs' : '') . '" data-label="' . e($label) . '">' . $vs . $html
