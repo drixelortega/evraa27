@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f26">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EVRAA 2027">
+  <link rel="apple-touch-icon" href="../evraa/images/icons/apple-touch-icon.png">
+  <meta name="description" content="EVRAA 2027 directory: places to stay and eat, directions, shuttles, hotlines and contact persons.">
+  <title>Directory | EVRAA 2027</title>
+  <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
+  <link rel="stylesheet" href="assets/site.css?v=20261118">
+</head>
+<!-- Sections open by link, e.g. directory.html#hotlines. Places, hotlines and contacts are in assets/data.js. -->
+<body data-page="directory" data-root="../">
+  <main class="shell">
+    <script src="assets/data.js?v=20261118"></script>
+    <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+    <script src="assets/site.js?v=20261118"></script>
+
+    <section class="page" aria-labelledby="directory-title">
+      <div class="page-head">
+        <div class="eyebrow">Getting around</div>
+        <h2 id="directory-title">Directory</h2>
+        <p class="section-lead">Places to stay and eat, directions, shuttles, hotlines and contact persons in one place.</p>
+      </div>
+      <nav class="subtabs" id="subtabs" aria-label="Directory sections">
+        <span class="tab-indicator" aria-hidden="true"></span>
+        <a class="tab" href="#hotels" data-sub="hotels">Hotels / Accommodations</a>
+        <a class="tab" href="#food" data-sub="food">Food Hub / Restaurants</a>
+        <a class="tab" href="#directions" data-sub="directions">Directions / Locations</a>
+        <a class="tab" href="#shuttle" data-sub="shuttle">Free Shuttle Service</a>
+        <a class="tab" href="#hotlines" data-sub="hotlines">HOTLINES</a>
+        <a class="tab" href="#contacts" data-sub="contacts">Contact Persons</a>
+      </nav>
+
+      <div class="subpage" data-sub="hotels">
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">H</span>
+          <h3>Hotel listings coming soon</h3>
+          <p>A list of hotels, inns and lodging houses in Calbayog City and Catbalogan City will be posted here for guests, parents and visiting officials.</p>
+          <a class="card-link" href="billeting.html">Delegations: see the 14 billeting schools <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="subpage" data-sub="food" hidden>
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">F</span>
+          <h3>Food hub &amp; restaurant guide coming soon</h3>
+          <p>Where to eat near the playing venues and billeting schools, including food stalls, restaurants and local delicacies from Calbayog and Catbalogan.</p>
+        </div>
+      </div>
+
+      <div class="subpage" data-sub="directions" hidden>
+        <ul class="grid-cards" id="direction-cards"></ul>
+      </div>
+
+      <div class="subpage" data-sub="shuttle" hidden>
+        <div class="shuttle-hero">
+          <div>
+            <h3>Free shuttle service</h3>
+            <p>Shuttles will run during the games to help delegations get between billeting schools and playing venues. Routes, pick-up points and trip times will be posted here.</p>
+          </div>
+          <div class="road" aria-hidden="true"><span class="bus">EVRAA</span></div>
+        </div>
+        <ul class="grid-cards">
+          <li class="info-card" style="--accent: var(--teal)"><div class="meta"><span class="tba">To be announced</span></div><h3>Routes</h3><p>Shuttle lines connecting billeting schools and playing venues.</p></li>
+          <li class="info-card" style="--accent: var(--gold)"><div class="meta"><span class="tba">To be announced</span></div><h3>Pick-up points</h3><p>Where to wait for the shuttle at each school and venue.</p></li>
+          <li class="info-card" style="--accent: var(--flame)"><div class="meta"><span class="tba">To be announced</span></div><h3>Trip times</h3><p>First and last trips each day, and how often shuttles run.</p></li>
+        </ul>
+      </div>
+
+      <div class="subpage" data-sub="hotlines" hidden>
+        <ul class="grid-cards" id="hotline-cards"></ul>
+        <p class="page-note">In an emergency, call 911 first.</p>
+      </div>
+
+      <div class="subpage" data-sub="contacts" hidden>
+        <div id="contacts-area"></div>
+      </div>
+    </section>
+  </main>
+  <script src="assets/directory.js?v=20261118"></script>
+</body>
+</html>

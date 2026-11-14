@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f26">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EVRAA 2027">
+  <link rel="apple-touch-icon" href="../evraa/images/icons/apple-touch-icon.png">
+  <meta name="description" content="EVRAA 2027 sports, game schedules and playing venues.">
+  <title>Games Schedule | EVRAA 2027</title>
+  <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
+  <link rel="stylesheet" href="assets/site.css?v=20261118">
+</head>
+<!-- Sports and their schedules are in assets/data.js (SPORTS, SCHEDULE); the sport icons are in assets/site.js -->
+<body data-page="games" data-root="../">
+  <main class="shell">
+    <script src="assets/data.js?v=20261118"></script>
+    <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+    <script src="assets/site.js?v=20261118"></script>
+
+    <section class="page" aria-labelledby="games-title">
+      <div class="page-head">
+        <div class="eyebrow">The sports</div>
+        <h2 id="games-title">Sports contested</h2>
+        <p class="section-lead">Tap a sport to see its game schedule and playing venue.</p>
+      </div>
+      <div class="games-tools">
+        <input class="games-search" id="games-search" type="search" placeholder="Search sports" aria-label="Search sports">
+        <span class="chip" id="games-count"></span>
+      </div>
+      <ul class="grid-cards" id="games-grid"></ul>
+    </section>
+  </main>
+
+  <dialog class="sport-dialog" id="sport-dialog" aria-labelledby="sport-dialog-title">
+    <div class="sport-dialog-head">
+      <span class="sport-badge" id="sport-dialog-icon" aria-hidden="true"></span>
+      <div><div class="eyebrow">Game schedule</div><h3 id="sport-dialog-title"></h3></div>
+      <button type="button" class="dialog-close" id="sport-dialog-close" aria-label="Close">×</button>
+    </div>
+    <div id="sport-dialog-schedule"></div>
+    <div class="sport-dialog-venue">
+      <div><span class="dialog-label">Playing venue</span><p id="sport-dialog-address"></p></div>
+      <a class="cta dialog-cta" id="sport-dialog-venue" href="playing-venues.html">Go to playing venue <span aria-hidden="true">→</span></a>
+    </div>
+  </dialog>
+  <script src="assets/games.js?v=20261118"></script>
+</body>
+</html>

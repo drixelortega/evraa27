@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f26">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EVRAA 2027">
+  <link rel="apple-touch-icon" href="../evraa/images/icons/apple-touch-icon.png">
+  <meta name="description" content="EVRAA 2027 billeting areas: the 14 schools in Calbayog City where delegations will stay, on a map.">
+  <title>Billeting Areas | EVRAA 2027</title>
+  <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="assets/site.css?v=20261118">
+</head>
+<!-- Billeting Areas: the billeting schools and their map (SCHOOLS in assets/data.js) -->
+<body data-page="billeting" data-root="../">
+  <main class="shell">
+    <script src="assets/data.js?v=20261118"></script>
+    <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+    <script src="assets/site.js?v=20261118"></script>
+
+    <section class="page" aria-labelledby="billeting-title">
+      <div class="page-head">
+        <div class="eyebrow">Where delegations will stay</div>
+        <h2 id="billeting-title">Billeting Areas</h2>
+        <p class="section-lead">14 schools in Calbayog City will serve as billeting quarters. Tap a school to find it on the map.</p>
+      </div>
+      <div class="billeting">
+        <ol class="school-list" id="school-list"></ol>
+        <div class="map-card" id="school-map-card"><div id="school-map" role="region" aria-label="Map of the billeting schools"></div></div>
+      </div>
+      <p class="map-note">Map data © OpenStreetMap contributors. The Tinambacan Elementary School pin (gray) is approximate.</p>
+    </section>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/billeting.js?v=20261118"></script>
+</body>
+</html>

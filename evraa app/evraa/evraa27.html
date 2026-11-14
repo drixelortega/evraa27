@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f26">
+  <title>EVRAA 2027 | Budget Summary</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f6f0;
+      --surface: #fff;
+      --ink: #102219;
+      --ink-2: #33473b;
+      --muted: #5f6e65;
+      --line: #dfe6dc;
+      --forest: #123f26;
+      --green: #1d6b3a;
+      --leaf: #c9ec7a;
+      --flame: #ef6a1f;
+      --gold: #f2b330;
+      --teal: #139fbf;
+      --sky: #2c7fd6;
+      --optional-hatch: repeating-linear-gradient(45deg, #d99a12 0 4px, #f8deA0 4px 8px);
+      --shadow: 0 12px 30px rgba(18, 63, 38, .07);
+      --spectrum: linear-gradient(90deg, var(--sky), var(--teal) 30%, var(--gold) 62%, var(--flame));
+      font-family: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+      font-size: 16px;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: radial-gradient(1200px 520px at 85% -120px, rgba(242,179,48,.12), transparent 70%), radial-gradient(900px 480px at -10% 10%, rgba(19,159,191,.07), transparent 70%), var(--paper); background-repeat: no-repeat; color: var(--ink); }
+    body::before { position: fixed; z-index: 30; top: 0; left: 0; width: 100%; height: 6px; background: var(--spectrum); content: ""; }
+    img { max-width: 100%; display: block; }
+    button, input, select { font: inherit; }
+    .shell { max-width: 1680px; margin: 0 auto; padding: 30px 48px 56px; }
+
+    /* Top bar */
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 13px; color: var(--forest); font-size: 15px; font-weight: 800; letter-spacing: .08em; }
+    .brand-mark { display: grid; width: 42px; aspect-ratio: 1; place-items: center; border-radius: 10px; background: linear-gradient(135deg, var(--gold), var(--flame)); color: #fff; font-size: 20px; font-weight: 800; }
+    .top-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; padding: 8px 14px; border: 1px solid #c4d6c8; border-radius: 8px; background: var(--surface); color: var(--green); font-size: 14px; font-weight: 750; text-decoration: none; }
+    .back-btn:hover { background: #edf4ec; }
+    .back-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+    .top-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+    .sync { display: inline-flex; align-items: center; gap: 9px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2); font-size: 14px; font-weight: 650; }
+    .sync-dot { width: 10px; height: 10px; border-radius: 50%; background: #9aa69e; }
+    .sync.is-live .sync-dot { background: #22a454; box-shadow: 0 0 0 0 rgba(34,164,84,.5); animation: pulse 2s infinite; }
+    .sync.is-error .sync-dot { background: #d2462b; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(34,164,84,0); } 100% { box-shadow: 0 0 0 0 rgba(34,164,84,0); } }
+    .top-meta, .eyebrow { color: var(--muted); font-size: 13px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    .top-meta { line-height: 1.4; text-align: right; }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(380px, .7fr); align-items: center; gap: 36px; padding: 36px 0 30px; }
+    .hero-lockup { display: flex; align-items: center; gap: 32px; }
+    .hero-brand { flex: 0 0 auto; width: clamp(150px, 14vw, 210px); padding-right: 32px; border-right: 2px solid var(--line); }
+    .site-logo { width: 100%; height: auto; mix-blend-mode: multiply; }
+    .hero-copy { min-width: 0; }
+    .eyebrow { color: var(--flame); }
+    h1 { margin: 10px 0 12px; color: var(--forest); font-size: clamp(38px, 3.9vw, 58px); line-height: 1.02; font-weight: 800; letter-spacing: -.015em; }
+    h1 span { background: linear-gradient(90deg, var(--green), var(--teal) 55%, var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subtitle { max-width: 680px; margin: 0; color: var(--muted); font-size: 19px; line-height: 1.5; }
+    .hero-total { position: relative; overflow: hidden; padding: 26px 30px 22px; border-radius: 16px; background: linear-gradient(140deg, #0f3a22, #1d6b3a); box-shadow: 0 20px 40px rgba(18,63,38,.22); color: #fff; }
+    .hero-total::after { position: absolute; left: 0; bottom: 0; width: 100%; height: 6px; background: var(--spectrum); content: ""; }
+    /* Soft rings echo the figure-8 in the logo */
+    .hero-total::before { position: absolute; top: -90px; right: -70px; width: 260px; aspect-ratio: 1; border: 34px solid rgba(201,236,122,.07); border-radius: 50%; box-shadow: -120px 60px 0 -34px rgba(19,159,191,.10); content: ""; pointer-events: none; }
+    .hero-total > * { position: relative; }
+    .hero-total-label { color: var(--leaf); font-size: 14px; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+    .hero-total strong { display: block; margin-top: 10px; font-size: clamp(34px, 3.3vw, 48px); line-height: 1.05; font-variant-numeric: tabular-nums; }
+    .hero-total small { display: block; margin-top: 10px; color: #d4e6da; font-size: 15px; line-height: 1.45; }
+    .hero-figure { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+    /* Change badge slides in when the final budget is revealed */
+    .hero-delta { display: inline-block; max-height: 0; padding: 0 11px; overflow: hidden; border-radius: 999px; background: rgba(201,236,122,.16); color: var(--leaf); font-size: 15px; font-weight: 800; line-height: 1.6; font-variant-numeric: tabular-nums; white-space: nowrap; opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s, max-height .3s, padding .3s; }
+    .hero-total.is-final .hero-delta { max-height: 40px; padding: 4px 11px; opacity: 1; transform: none; transition-delay: 1s, 1s, .7s, .7s; }
+    .hero-total-label, .hero-total small { transition: opacity .25s; }
+    .hero-total.is-swapping .hero-total-label, .hero-total.is-swapping small { opacity: 0; }
+    .toggle { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,.18); color: #e5efe8; cursor: pointer; font-size: 15px; user-select: none; }
+    .toggle input { position: absolute; opacity: 0; pointer-events: none; }
+    .switch { position: relative; flex: 0 0 auto; width: 44px; height: 24px; border-radius: 999px; background: rgba(255,255,255,.25); transition: background .2s; }
+    .switch::after { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; content: ""; transition: transform .2s; }
+    .toggle input:checked + .switch { background: var(--gold); }
+    .toggle input:checked + .switch::after { transform: translateX(20px); }
+    .toggle input:focus-visible + .switch { outline: 2px solid var(--leaf); outline-offset: 2px; }
+
+    /* Stat tiles */
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0 0 18px; }
+    .stat { position: relative; min-width: 0; overflow: hidden; padding: 22px 22px 20px 26px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, color-mix(in srgb, var(--accent, var(--green)) 7%, #fff), var(--surface) 55%); box-shadow: var(--shadow); }
+    .stat::before { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--green)); content: ""; }
+    .stat-label { display: flex; align-items: center; gap: 8px; }
+    .stat-label::before { width: 8px; height: 8px; border-radius: 50%; background: var(--accent, var(--green)); content: ""; }
+    .stat:nth-child(1) { --accent: var(--green); }
+    .stat:nth-child(2) { --accent: var(--gold); }
+    .stat:nth-child(3) { --accent: var(--teal); }
+    .stat:nth-child(4) { --accent: var(--flame); }
+    .stat-label { color: var(--muted); font-size: 15px; font-weight: 700; }
+    .stat-value { display: block; margin-top: 10px; color: var(--forest); font-size: clamp(26px, 2.4vw, 36px); font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    .stat-note { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+
+    /* Panels */
+    .visuals { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(360px, .85fr); gap: 16px; margin-bottom: 18px; }
+    /* No optional items: the allocation chart takes the full row */
+    .visuals:not(:has(.optional-box:not([hidden]))) { grid-template-columns: minmax(0, 1fr); }
+    .visuals:not(:has(.optional-box:not([hidden]))) > .side { display: none; }
+    .panel { min-width: 0; padding: 26px 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
+    .panel h2, .data-title h2 { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--forest); font-size: 22px; font-weight: 800; }
+    .panel h2::before, .data-title h2::before { width: 6px; height: 22px; flex: 0 0 auto; border-radius: 3px; background: linear-gradient(180deg, var(--gold), var(--flame)); content: ""; }
+    .panel-head .panel-sub, .data-title .panel-sub { padding-left: 16px; }
+    .panel-head .legend { margin-left: 16px; }
+    .panel-sub { margin-top: 5px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .hint { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .side { display: grid; gap: 16px; min-width: 0; }
+    .alloc-panel { display: flex; flex-direction: column; }
+    .allocation-list { display: grid; flex: 1; align-content: space-evenly; gap: 4px; margin-top: 18px; counter-reset: alloc; }
+    .allocation { display: grid; grid-template-columns: minmax(200px, 360px) minmax(120px, 1fr) 64px minmax(150px, auto); align-items: center; gap: 18px; width: 100%; margin: 0; padding: 12px 14px; border: 1px solid transparent; border-bottom-color: #eef2ec; border-radius: 10px; background: none; color: inherit; cursor: pointer; text-align: left; transition: background .15s, border-color .15s, opacity .2s; }
+    .allocation:last-child { border-bottom-color: transparent; }
+    .allocation-name::before { display: inline-block; width: 28px; color: #9fb0a5; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; counter-increment: alloc; content: counter(alloc, decimal-leading-zero); }
+    .allocation:hover, .allocation:focus-visible { background: #f1f6ee; outline: none; }
+    .allocation:focus-visible { border-color: #8da997; }
+    .allocation.is-active { border-color: #b7d0bd; background: #ebf4e8; }
+    .allocation-list.has-active .allocation:not(.is-active) { opacity: .45; }
+    .allocation-name { overflow: hidden; color: var(--ink-2); font-size: 16px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+    .allocation.is-active .allocation-name { color: var(--forest); font-weight: 800; }
+    .allocation-track { position: relative; display: flex; height: 20px; overflow: hidden; border-radius: 0 6px 6px 0; background: #f0f3ee; }
+    .allocation-ghost { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 0 5px 5px 0; background: repeating-linear-gradient(135deg, #c9dcc6 0 3px, #e2ece0 3px 6px); box-shadow: inset 0 0 0 1px #a9c4ae; transition: width .6s cubic-bezier(.2,.7,.2,1); }
+    .allocation-fill { position: relative; display: block; height: 100%; border-radius: 0 5px 5px 0; background: linear-gradient(90deg, var(--green), #2f8a4c); transition: width .6s cubic-bezier(.2,.7,.2,1); }
+    .allocation-amount small { display: block; margin-top: 2px; font-size: 13px; }
+    .legend { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 8px; color: var(--muted); font-size: 13px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { display: inline-block; width: 18px; height: 10px; border-radius: 0 3px 3px 0; }
+    .legend .swatch-final { background: var(--green); }
+    .legend .swatch-original { background: repeating-linear-gradient(135deg, #c9dcc6 0 3px, #e2ece0 3px 6px); box-shadow: inset 0 0 0 1px #a9c4ae; }
+
+    /* Change vs. original proposal */
+    .is-down { color: #1f6f8b !important; }
+    .is-up { color: #b0461a !important; }
+    .is-same { color: var(--muted) !important; }
+
+    /* Budget lines with a note: dotted underline, note shows as a tooltip */
+    .has-note { position: relative; cursor: help; text-decoration: underline dotted #7f9a87; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+    .has-note.is-alert { text-decoration-color: #d0703f; }
+    .has-note:focus-visible { border-radius: 3px; outline: 2px solid var(--green); outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .allocation-fill.optional-fill { margin-left: 2px; background: var(--optional-hatch); }
+    .allocation-share { color: var(--forest); font-size: 16px; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+    .allocation-amount { color: var(--muted); font-size: 15px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .breakdown-list { display: grid; gap: 14px; margin-top: 18px; counter-reset: rank; }
+    .breakdown-panel { margin-bottom: 18px; }
+    .breakdown-panel .breakdown-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 48px; }
+    .breakdown { grid-template-columns: minmax(0, 1fr); min-width: 0; padding: 12px 14px; border-radius: 10px; background: #f8faf6; }
+    .breakdown-top span:first-child::before { display: inline-grid; width: 24px; height: 24px; margin-right: 10px; place-items: center; border-radius: 50%; background: var(--forest); color: #fff; font-size: 12px; font-weight: 800; counter-increment: rank; content: counter(rank); vertical-align: 1px; }
+    .breakdown:nth-child(-n+3) .breakdown-top span:first-child::before { background: linear-gradient(135deg, var(--gold), var(--flame)); }
+    .breakdown .breakdown-track { margin-left: 34px; }
+    .breakdown { display: grid; gap: 6px; }
+    .breakdown-top { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+    .breakdown-top span:first-child { min-width: 0; overflow: hidden; color: var(--ink-2); font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .breakdown-top span:last-child { color: var(--forest); font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .breakdown-track { height: 10px; overflow: hidden; border-radius: 0 4px 4px 0; background: #edf1ea; }
+    .breakdown-fill { display: block; height: 100%; border-radius: 0 4px 4px 0; background: linear-gradient(90deg, var(--sky), var(--teal)); transition: width .6s cubic-bezier(.2,.7,.2,1); }
+    .breakdown.is-optional .breakdown-fill { background: var(--optional-hatch); }
+    .link-btn { padding: 0; border: 0; background: none; color: var(--green); cursor: pointer; font-size: 14px; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+
+    .optional-box { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; min-height: 170px; border-color: #f0d898; background: linear-gradient(135deg, #fff8e6, #fdeccd); }
+    .optional-kicker { color: #9a5b10; font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .optional-box strong.big { display: block; margin: 12px 0 4px; color: #6b3f06; font-size: 36px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .optional-box p { margin: 0; color: #7a5a22; font-size: 15px; line-height: 1.5; }
+
+    .tooltip { position: fixed; z-index: 40; max-width: 320px; padding: 10px 13px; border-radius: 8px; background: var(--ink); box-shadow: 0 8px 22px rgba(0,0,0,.2); color: #fff; font-size: 14px; line-height: 1.5; opacity: 0; pointer-events: none; transition: opacity .12s; }
+    .tooltip.show { opacity: 1; }
+    .tooltip b { display: block; font-weight: 750; }
+    .tooltip span { color: #c5d8ce; font-variant-numeric: tabular-nums; }
+
+    /* Table */
+    .data-panel { padding: 0; overflow: hidden; }
+    .data-title { padding: 26px 28px 6px; }
+    .table-wrap { position: relative; }
+    .data-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 28px 18px; border-bottom: 1px solid var(--line); }
+    .filters { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .select-wrap { position: relative; }
+    .select-wrap::after { position: absolute; top: 15px; right: 13px; width: 8px; height: 8px; border-right: 1.5px solid #67766d; border-bottom: 1.5px solid #67766d; content: ""; pointer-events: none; transform: rotate(45deg); }
+    .committee-select { width: min(320px, 34vw); padding: 11px 36px 11px 13px; appearance: none; border: 1px solid var(--line); border-radius: 8px; outline: none; background: #fff; color: var(--ink); font-size: 15px; }
+    .sort-select { width: auto; }
+    .search { width: min(320px, 26vw); padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px; outline: none; background: #fcfdfb; font-size: 15px; }
+    .search:focus, .committee-select:focus { border-color: #8da997; }
+    .actions { display: flex; gap: 10px; }
+    .action-btn { flex: 0 0 auto; padding: 11px 15px; border: 1px solid #c4d6c8; border-radius: 8px; background: #fff; color: var(--green); cursor: pointer; font-size: 15px; font-weight: 750; }
+    .action-btn:hover { background: #edf4ec; }
+    .action-btn.primary { border-color: var(--green); background: var(--green); color: #fff; }
+    .action-btn.primary:hover { background: var(--forest); }
+    .ghost-btn { color: var(--ink-2); font-weight: 650; }
+    .table-wrap { max-height: 720px; overflow: auto; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
+    th, td { max-width: 480px; padding: 12px 16px; border-right: 1px solid #edf0eb; border-bottom: 1px solid #edf0eb; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    thead th { position: sticky; z-index: 2; top: 0; background: var(--forest); color: #e9f3ec; font-size: 13px; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; }
+    .committee-row th { position: sticky; top: 42px; z-index: 1; padding: 0; background: linear-gradient(90deg, #dcebd8, #eef5ec); box-shadow: inset 4px 0 0 var(--green); color: var(--forest); font-size: 16px; }
+    .committee-toggle { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; border: 0; background: none; color: inherit; cursor: pointer; font-weight: 800; text-align: left; }
+    .committee-toggle:hover { background: #d9e8d6; }
+    .committee-head { display: flex; align-items: center; }
+    .committee-head .committee-toggle { flex: 1 1 auto; min-width: 0; }
+    .committee-head .file-link { flex: 0 0 auto; margin: 0 16px 0 4px; }
+    .file-link { display: inline-block; margin-left: 10px; padding: 3px 10px; border: 1px solid #b7d0bd; border-radius: 999px; background: #fff; color: var(--green); font-size: 13px; font-weight: 750; letter-spacing: 0; text-decoration: none; text-transform: none; white-space: nowrap; vertical-align: 1px; }
+    .file-link:hover { border-color: var(--green); background: var(--green); color: #fff; }
+    .file-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+    .proposal-dialog { width: min(1100px, calc(100% - 32px)); max-width: none; max-height: min(88vh, 900px); padding: 0; overflow: hidden; border: 0; border-radius: 16px; background: var(--surface); box-shadow: 0 30px 80px rgba(12,40,24,.35); color: var(--ink); }
+    .proposal-dialog::backdrop { background: rgba(10,30,18,.58); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+    .proposal-dialog[open] { animation: rise .25s ease-out; }
+    .proposal-dialog-head { display: flex; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--line); background: #f7f9f5; }
+    .proposal-dialog-head h2 { margin: 3px 0 0; color: var(--forest); font-size: 22px; }
+    .proposal-dialog-head .eyebrow { font-size: 11px; }
+    .proposal-dialog-close { display: grid; width: 38px; height: 38px; flex: 0 0 auto; margin-left: auto; place-items: center; border: 0; border-radius: 50%; background: #e8efe6; color: var(--forest); cursor: pointer; font-size: 24px; line-height: 1; }
+    .proposal-dialog-close:hover { background: #dce8d9; }
+    .proposal-dialog-close:focus-visible, .proposal-file-label:focus-within { outline: 2px solid var(--green); outline-offset: 2px; }
+    .proposal-dialog-body { max-height: calc(88vh - 82px); padding: 20px 24px 24px; overflow: auto; }
+    .proposal-status { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    .proposal-sheet-select { max-width: 100%; margin: 0 0 14px; padding: 8px 34px 8px 12px; border: 1px solid #c4d6c8; border-radius: 8px; background: #fff; color: var(--ink); }
+    .proposal-sheet { overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+    .proposal-sheet table { width: max-content; min-width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+    .proposal-sheet th, .proposal-sheet td { min-width: 90px; max-width: 320px; padding: 9px 11px; border-right: 1px solid #edf0eb; border-bottom: 1px solid #edf0eb; text-align: left; vertical-align: top; white-space: pre-wrap; }
+    .proposal-sheet thead th { position: sticky; z-index: 1; top: 0; background: var(--forest); color: #fff; font-size: 12px; }
+    .proposal-sheet tbody th { min-width: 44px; background: #f7f9f5; color: var(--muted); font-weight: 600; text-align: right; }
+    .proposal-sheet tbody tr:nth-child(even) td { background: #fbfcfa; }
+    .proposal-file-pick { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 16px; color: var(--muted); font-size: 13px; }
+    .proposal-file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
+    .proposal-file-label { display: inline-block; padding: 8px 12px; border: 1px solid #c4d6c8; border-radius: 8px; background: #fff; color: var(--green); cursor: pointer; font-size: 13px; font-weight: 700; }
+    .chevron { display: inline-block; width: 9px; height: 9px; flex: 0 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .2s; }
+    tbody.collapsed .chevron { transform: rotate(-45deg); }
+    tbody.collapsed tr:not(.committee-row) { display: none; }
+    .committee-total { margin-left: auto; text-align: right; font-variant-numeric: tabular-nums; }
+    .committee-total .panel-sub { font-weight: 500; }
+    .subcommittee-row th { padding: 11px 16px; background: #fafcf8; color: var(--ink-2); font-size: 15px; }
+    .source-mark { float: right; margin-left: 10px; color: var(--green); font-size: 13px; font-weight: 750; }
+    .committee-toggle .source-mark { float: none; }
+    .item-row { transition: background .12s; }
+    .item-row:nth-child(even of .item-row) td { background: #fbfcfa; }
+    .item-row:hover td { background: #f1f7ee; }
+    .item-row td { color: var(--ink-2); }
+    .item-row td:last-child { color: var(--muted); font-size: 14px; }
+    .amount { min-width: 160px; color: var(--forest) !important; font-weight: 650; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    thead th.amount, thead th.num { color: #e9f3ec !important; }
+    .num { min-width: 140px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    td.change { font-weight: 650; }
+    td.change small { display: block; font-size: 13px; font-weight: 500; }
+    .subtotal-row td.num { color: var(--muted); }
+    .subtotal-row td { background: #f6faf3; color: var(--forest); font-weight: 800; }
+    .optional-row td { background: #fff6e2; }
+    mark { padding: 0 2px; border-radius: 3px; background: var(--leaf); color: inherit; }
+    .result-summary { color: var(--green); font-weight: 750; }
+    .table-foot { display: flex; justify-content: space-between; gap: 12px; padding: 13px 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .empty { padding: 44px 20px; color: var(--muted); font-size: 16px; text-align: center; }
+    .footer { display: flex; justify-content: space-between; gap: 15px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); color: #7d8a81; font-size: 13px; }
+
+    /* Entrance: tiles and panels rise in, bars grow from zero on first load */
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .hero-copy, .hero-total, .stat, .shell > .panel, .visuals > .panel, .visuals > .side { animation: rise .6s cubic-bezier(.2,.7,.2,1) backwards; }
+    .hero-total { animation-delay: .08s; }
+    .stat:nth-child(1) { animation-delay: .14s; }
+    .stat:nth-child(2) { animation-delay: .2s; }
+    .stat:nth-child(3) { animation-delay: .26s; }
+    .stat:nth-child(4) { animation-delay: .32s; }
+    .visuals > .panel { animation-delay: .38s; }
+    .visuals > .side { animation-delay: .46s; }
+    .breakdown-panel { animation-delay: .54s; }
+    .data-panel { animation-delay: .6s; }
+    body.is-loading .allocation-fill, body.is-loading .allocation-ghost, body.is-loading .breakdown-fill { width: 0 !important; }
+    .stat, .panel { transition: box-shadow .2s, transform .2s; }
+    .stat:hover { box-shadow: 0 16px 34px rgba(18,63,38,.11); transform: translateY(-2px); }
+
+    /* Live-update feedback */
+    .toast { position: fixed; z-index: 50; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 10px; padding: 13px 18px; border-radius: 10px; background: var(--forest); box-shadow: 0 14px 30px rgba(0,0,0,.2); color: #fff; font-size: 15px; font-weight: 650; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .25s, transform .25s; }
+    .toast.show { opacity: 1; transform: none; }
+    .toast.is-error { background: #9c3418; }
+    .flash { animation: flash 1.4s ease-out; }
+    @keyframes flash { 0% { background-color: #fff1c9; } 100% { background-color: var(--surface); } }
+    .drop-veil { position: fixed; z-index: 60; inset: 0; display: none; place-items: center; background: rgba(18,63,38,.82); color: #fff; font-size: 26px; font-weight: 800; }
+    body.dragging .drop-veil { display: grid; }
+
+    @media (max-width: 1100px) {
+      .allocation { grid-template-columns: minmax(140px, 220px) minmax(60px, 1fr) 56px; }
+      .allocation-amount, .alloc-panel .hint { display: none; }
+    }
+    @media (max-width: 900px) {
+      .shell { padding: 24px 22px 40px; }
+      .hero { grid-template-columns: 1fr; gap: 22px; }
+      .visuals { grid-template-columns: 1fr; }
+      .optional-box { min-height: 0; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .data-head { align-items: stretch; flex-direction: column; }
+      .breakdown-panel .breakdown-list { grid-template-columns: minmax(0, 1fr); }
+      h1 { font-size: 36px; }
+      .hero-total strong { font-size: 32px; }
+      .stat-value { font-size: 26px; }
+      .subtitle { font-size: 17px; }
+    }
+    @media (max-width: 600px) {
+      :root { font-size: 15px; }
+      .shell { padding: 18px 16px 30px; }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 10px; padding-bottom: 14px; }
+      .brand { font-size: 13px; gap: 10px; }
+      .top-left { gap: 10px; }
+      .back-btn { padding: 6px 11px; font-size: 13px; }
+      .brand-mark { width: 34px; font-size: 16px; border-radius: 8px; }
+      .top-right { justify-content: flex-start; }
+      .sync { padding: 6px 12px; font-size: 13px; }
+      .hero { padding: 20px 0 18px; gap: 16px; }
+      .hero-brand { width: 96px; }
+      h1 { margin: 6px 0; font-size: 26px; }
+      .eyebrow, .top-meta { font-size: 12px; }
+      .hero-total { padding: 18px 18px 16px; border-radius: 12px; }
+      .hero-total-label { font-size: 12px; }
+      .hero-total strong { margin-top: 6px; font-size: 26px; }
+      .hero-total small { font-size: 14px; }
+      .toggle { font-size: 14px; }
+      .stat { padding: 14px 16px 14px 20px; }
+      .stat-label { font-size: 14px; }
+      .stat-value { margin-top: 6px; font-size: 22px; }
+      .stat-note { font-size: 13px; }
+      .panel h2 { font-size: 18px; }
+      .panel-sub { font-size: 13px; }
+      .hint { white-space: normal; font-size: 13px; }
+      .breakdown-top { font-size: 14px; }
+      .optional-box strong.big { font-size: 24px; }
+      .optional-box p { font-size: 14px; }
+      .data-head { padding: 14px 16px; }
+      .data-title { padding: 18px 16px 2px; }
+      .data-title h2 { font-size: 18px; }
+      .committee-select, .search, .action-btn { padding-top: 9px; padding-bottom: 9px; font-size: 14px; }
+      table { min-width: 760px; font-size: 14px; }
+      .num { min-width: 120px; }
+      .committee-row th { font-size: 15px; }
+      .subcommittee-row th { font-size: 14px; }
+      .committee-head .file-link { margin-right: 11px; }
+      .table-foot { flex-direction: column; gap: 4px; padding: 12px 16px; font-size: 13px; }
+      .toast { right: 16px; bottom: 16px; left: 16px; font-size: 14px; }
+      .top-meta { display: none; }
+      .hero-lockup { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .hero-brand { padding-right: 0; border-right: 0; }
+      .subtitle { font-size: 15px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .panel { padding: 18px 16px; }
+      .allocation { grid-template-columns: minmax(100px, 1.2fr) minmax(40px, 1fr) 50px; gap: 9px; padding: 8px 4px; }
+      .allocation-name { font-size: 14px; }
+      .allocation-name::before { display: none; }
+      .breakdown { padding: 10px 12px; }
+      .breakdown-top span:first-child::before { width: 20px; height: 20px; margin-right: 8px; font-size: 11px; }
+      .breakdown .breakdown-track { margin-left: 28px; }
+      .filters { display: grid; grid-template-columns: 1fr 1fr; }
+      .filters .search { grid-column: 1 / -1; }
+      .committee-select, .search { width: 100%; min-width: 0; }
+      .actions { flex-wrap: wrap; }
+      .actions .action-btn { flex: 1 1 auto; }
+      th, td { padding: 10px 11px; }
+      .amount { min-width: 130px; }
+      .committee-toggle { flex-wrap: wrap; }
+      .committee-total { width: 100%; margin-left: 0; text-align: left; }
+      .footer { flex-direction: column; }
+    }
+    @media print {
+      body::before, .back-btn, .sync, .top-right .action-btn, .toggle, .data-head, .toast { display: none !important; }
+      .table-wrap { max-height: none; overflow: visible; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation: none !important; } }
+  </style>
+</head>
+<body class="is-loading">
+  <main class="shell">
+    <header class="topbar">
+      <div class="top-left"><a class="back-btn" href="../index.html" aria-label="Back to the EVRAA 2027 home page"><span aria-hidden="true">←</span> Home</a>
+      <div class="brand"><span class="brand-mark">E</span><span>EVRAA 2027 &nbsp;/&nbsp; BUDGET SUMMARY</span></div></div>
+      <div class="top-right">
+        <span class="sync" id="sync" title="Where the numbers on this page come from"><span class="sync-dot" aria-hidden="true"></span><span id="sync-text">Loading Excel…</span></span>
+        <button class="action-btn" id="upload-excel" type="button" hidden title="Upload EVRAA 2027 Final Summary Fin.xlsx to refresh the numbers">Upload Excel file</button>
+        <div class="top-meta">EXECOM SECRETARIAT<br>CALBAYOG CITY</div>
+      </div>
+      <input type="file" id="file-input" accept=".xlsx,.xls" hidden>
+    </header>
+    <section class="hero">
+      <div class="hero-lockup">
+        <div class="hero-brand">
+          <img class="site-logo" src="images/EVRAA%2027%20Logo.png" alt="EVRAA 2027 — One Region. One Spirit. One Victory. Calbayog | Catbalogan" width="1949" height="2282" />
+        </div>
+        <div class="hero-copy">
+          <div class="eyebrow">Final event budget · 2027</div>
+          <h1>Budget <span>summary</span></h1>
+          <p class="subtitle">Final committee allocations and itemized requirements for the Eastern Visayas Regional Athletic Association meet, compared with the original proposal.</p>
+        </div>
+      </div>
+      <aside class="hero-total" id="hero-total" aria-label="Grand total">
+        <span class="hero-total-label" id="hero-label">Original proposal · grand total</span>
+        <div class="hero-figure"><strong id="hero-amount">—</strong><span class="hero-delta" id="hero-delta" aria-hidden="true"></span></div>
+        <small id="hero-note"></small>
+        <label class="toggle"><input type="checkbox" id="final-toggle"><span class="switch" aria-hidden="true"></span><span>Show Final Budget</span></label>
+        <label class="toggle" id="optional-toggle-wrap"><input type="checkbox" id="optional-toggle"><span class="switch" aria-hidden="true"></span><span id="optional-toggle-text">Include optional items</span></label>
+      </aside>
+    </section>
+    <section class="stats" aria-label="Budget overview">
+      <article class="stat"><span class="stat-label">Original proposal</span><strong class="stat-value" id="stat-original">—</strong><span class="stat-note" id="stat-original-note"></span></article>
+      <article class="stat"><span class="stat-label">Change from proposal</span><strong class="stat-value" id="stat-change">—</strong><span class="stat-note" id="stat-change-note"></span></article>
+      <article class="stat"><span class="stat-label">Largest committee share</span><strong class="stat-value" id="stat-top">—</strong><span class="stat-note" id="stat-top-note"></span></article>
+      <article class="stat"><span class="stat-label">Budget lines</span><strong class="stat-value" id="line-count">—</strong><span class="stat-note">Searchable itemized entries</span></article>
+    </section>
+    <section class="visuals" aria-label="Committee allocations">
+      <article class="panel alloc-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Allocation by committee</h2>
+            <div class="panel-sub" id="allocation-sub">Final totals by committee</div>
+            <div class="legend"><span><i class="swatch-final" aria-hidden="true"></i>Final budget</span><span><i class="swatch-original" aria-hidden="true"></i>Original proposal</span></div>
+          </div>
+          <span class="hint">Click a committee to drill down</span>
+        </div>
+        <div class="allocation-list" id="allocation-list"></div>
+      </article>
+      <div class="side">
+        <article class="panel optional-box" id="optional-box">
+          <div>
+            <div class="optional-kicker" id="optional-kicker">Optional</div>
+            <strong class="big" id="optional-amount">—</strong>
+            <p id="optional-name"></p>
+          </div>
+          <p id="optional-foot"></p>
+        </article>
+      </div>
+    </section>
+    <section class="panel breakdown-panel" aria-label="Largest budget lines">
+      <div class="panel-head">
+        <div>
+          <h2 id="breakdown-title">Largest budget lines</h2>
+          <div class="panel-sub" id="breakdown-sub">Top items across all committees</div>
+        </div>
+        <button class="link-btn" id="breakdown-clear" type="button" hidden>Show all</button>
+      </div>
+      <div class="breakdown-list" id="breakdown-list"></div>
+    </section>
+    <section class="panel data-panel" aria-label="Itemized budget">
+      <div class="data-title">
+        <h2>Itemized budget</h2>
+        <div class="panel-sub">Final budget amounts for every budget line. Underlined lines have a note; hover or tap to read it.</div>
+      </div>
+      <div class="data-head">
+        <div class="filters">
+          <label class="select-wrap"><select class="committee-select" id="committee-filter" aria-label="Filter by committee"><option value="all">All committees</option></select></label>
+          <label class="select-wrap"><select class="committee-select sort-select" id="sort-order" aria-label="Sort budget lines"><option value="source">Source order</option><option value="desc">Amount: high → low</option><option value="asc">Amount: low → high</option></select></label>
+          <input class="search" id="budget-search" type="search" placeholder="Search budget lines  ( / )" aria-label="Search budget lines">
+        </div>
+        <div class="actions">
+          <button class="action-btn ghost-btn" id="toggle-all" type="button">Collapse all</button>
+        </div>
+      </div>
+      <div class="table-wrap" id="table-area"></div>
+      <div class="table-foot"><span id="row-count"></span><span id="mark-legend">✓ indicates a checkmark in the source</span></div>
+    </section>
+    <div class="tooltip" id="tooltip" role="tooltip"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="drop-veil" id="drop-veil">Drop the Excel file to load it</div>
+    <footer class="footer"><span>Prepared by EVRAA 2027 EXECOM SECRETARIAT</span><span id="footer-source">Amounts shown as provided in the source summary.</span></footer>
+  </main>
+  <dialog class="proposal-dialog" id="proposal-dialog" aria-labelledby="proposal-dialog-title">
+    <div class="proposal-dialog-head">
+      <div><div class="eyebrow">Summary of Budget Proposals</div><h2 id="proposal-dialog-title">Proposal summary</h2></div>
+      <button class="proposal-dialog-close" id="proposal-dialog-close" type="button" aria-label="Close proposal summary">×</button>
+    </div>
+    <div class="proposal-dialog-body">
+      <p class="proposal-status" id="proposal-status" role="status" aria-live="polite"></p>
+      <label id="proposal-sheet-label" for="proposal-sheet-select" hidden>Worksheet</label>
+      <select class="proposal-sheet-select" id="proposal-sheet-select" aria-label="Proposal worksheet" hidden></select>
+      <div class="proposal-sheet" id="proposal-sheet"></div>
+      <div class="proposal-file-pick" id="proposal-file-pick" hidden>
+        <label class="proposal-file-label" for="proposal-file-input">Choose proposal file</label>
+        <input class="proposal-file-input" id="proposal-file-input" type="file" accept=".xlsx,.xls">
+        <span>For pages opened from disk, select the matching workbook to view its details.</span>
+      </div>
+    </div>
+  </dialog>
+  <script src="xlsx.full.min.js"></script>
+  <script>
+    (() => {
+      // ---------- Data source ----------
+      const SOURCE_FILE = 'EVRAA 2027 Final Summary Fin.xlsx';
+      const POLL_MS = 3000;
+      // Last workbook picked while the page is opened from disk, so a refresh keeps its numbers
+      const SAVED_UPLOAD_KEY = 'evraa-saved-workbook';
+
+      // Snapshot of the final budget, shown until the workbook loads (or if it can't be read)
+      const SNAPSHOT = [{"name":"Sports and Site Management Committee","marked":true,"groups":[{"name":"A. Subcom on Playing Venues","marked":false,"optional":false,"items":[["Archery","Materials, Labor, Rentals",1443969.62,null],["Arnis","Materials, Labor, Rentals",140656.01,null],["Athletics","Materials, Labor, Rentals",1161996.56,null],["Badminton","Materials, Labor, Rentals",117904,null],["Baseball","Materials, Labor, Rentals",586599.9,null],["Softball","Materials, Labor, Rentals",667500.16,null],["Basketball","Materials, Labor, Rentals",912489.5,null],["Boxing","Materials, Labor, Rentals",420753.95,null],["Football","Materials, Labor, Rentals",715655.55,null],["Gymnastics","Materials, Labor, Rentals",167820,null],["Special Games","Materials, Labor, Rentals",198855.61,null],["Taekwondo","Materials, Labor, Rentals",139179.21,null],["Tennis","Materials, Labor, Rentals",507196.65,null],["Volleyball","Materials, Labor, Rentals",166511.51,null],["Wrestling","Materials, Labor, Rentals",403566.71,null],["Wushu","Materials, Labor, Rentals",319966.5,null],["Weight Lifting","Materials, Labor, Rentals",null,null]]},{"name":"B. Subcom on Facilities & Equipment","marked":true,"optional":false,"items":[["Archery","Various entries",388000,null],["Arnis","Various entries",393240,null],["Athletics","Various entries",342560,null],["Badminton","Various entries",289440,null],["Baseball","Various entries",298900,null],["Softball","Various entries",334326,null],["Basketball","Various entries",207500,null],["Boxing","Various entries",303700,null],["Football","Various entries",192150,null],["Gymnastics","Various entries",1416750,null],["Special Games","Various entries",110645,null],["Taekwondo","Various entries",247280,null],["Tennis","Various entries",339369,null],["Volleyball","Various entries",291000,null],["Wrestling","Various entries",294346,null],["Wushu","Various entries",541194,null],["Weight Lifting","Various entries",205644,null]]},{"name":"C. Development of Brgy. Aguit-itan","marked":false,"optional":false,"items":[["Development of Brgy. Aguit-itan","Clearing & Grubbing & Earthworks",3353122.95,null]]},{"name":"D. EVRAA Main Stage","marked":false,"optional":false,"items":[["EVRAA Main Stage","Materials, Labor, Rentals",308765,null]]},{"name":"E. Rehabilitation of Oval Track - from NWSSU POW","marked":false,"optional":false,"items":[["Rehabilitation of Oval Track","Rehab",5000000,null]]}]},{"name":"Billeting & General Services Committee","marked":false,"groups":[{"name":"A. Subcom on Billeting Quarters","marked":true,"optional":false,"items":[["Carayman CES","Shower Area/CRs; Repair & Rehab; BFP Blue Drums 25 sets/school; Rubber Mats (60pcs/room, 30 rooms/school)",1486190.5,null],["Bagacay IS","Same as above",1496190.5,null],["Calbayog Pilot CES","Same as above",1471190.5,null],["Calbayog City SPED","Same as above",1409190.5,null],["CCNHS","Same as above",1454190.5,null],["Calb. East CES","Same as above",1469190.5,null],["San Policarpo NHS","Same as above",1411190.5,null],["San Policarpo CES","Same as above",1401190.5,null],["Trinidad CES","Same as above",1404190.5,null],["Trinidad NHS","Same as above",1409190.5,null],["Oquendo NHS","Same as above",1464190.5,null],["Oquendo CES","Same as above",1394190.5,null],["Tinambacan CES","Same as above",1399190.5,null],["RLMSF","Same as above",1434190.5,null]]},{"name":"B. Subcom on Billeting Quarters Management","marked":true,"optional":false,"items":[["Billeting Quarters Management","14 schools @ 50,000.00 operational expense",null,null]]},{"name":"C. Common Billeting Requirements","marked":true,"optional":false,"items":[["Water Dispenser","5 pcs x 14 schools @6,000.00",420000,null],["Fire Extinguisher","5pcs x 14 schools @3,000.00",210000,null],["Jetmatic w/ Water Tank","1 set x 14 schools @ 300,000.00",null,null],["Tents","2 sets x 14 schools @2,500.00",70000,null],["Freezers","1 unit x 14 schools @15,000.00",210000,null],["Generator Set","1 unit x 14 schools @20,000.00",280000,null],["Electric Fans","10 units x 14 schools @2,500.00",350000,null],["Table Rental (Mess Hall)","20pcs x 6 days x 14 schools @60.00",100800,null],["Chair Rental (Mess Hall)","160pcs x 6 days x 14 schools @6.00.00",80640,null],["Local Staff Stipend","6pax x 6days x 14 schools @500.00",252000,null],["Water/Electric Bills","14 schools @15,000.00",210000,null]]},{"name":"D. Subcom on Waste Disposal","marked":false,"optional":false,"items":[["Waste Disposal","Various entries",981180,null]]}]},{"name":"RCU Committee","marked":false,"groups":[{"name":"A. Subcom on Security & Safety","marked":true,"optional":false,"items":[["PNP","Food Allowance & Gasoline",487090,null],["AFP","Food Allowance & Gasoline",320511,"No budget proposal submitted"],["BFP","Food Allowance & Gasoline",128532,null],["CDRRMO","Various Supplies, Food, Fuel",579500,null],["Hand-held Radios","100 units @ 3,000 each",null,null]]},{"name":"B. Subcom on Medical Services (Charged to CHO)","marked":true,"optional":false,"items":[["Medical Services (Charged to CHO)","6275231.05",null,null]]},{"name":"C. Subcom on Transportation & Traffic Management","marked":false,"optional":false,"items":[["Transportation & Traffic Management","Food, Barricades, Vehicle Rentals, Supplies, & Gasoline",1247400,null]]},{"name":"D. Subcom on Barangay Operation Support","marked":false,"optional":false,"items":[["Barangay Operation Support","10 tanods x 14 schools x 6 days @300.00",252000,null]]}]},{"name":"Special Events Committee","marked":false,"groups":[{"name":"A. Subcom on 100 Days Countdown","marked":true,"optional":false,"items":[["100 Days Countdown","Production, Technical, Costumes, Food",230700,null]]},{"name":"B. Subcom on Opening & Parade","marked":true,"optional":false,"items":[["Opening & Parade","Production, Technical, Costumes, Food",6552000,null]]},{"name":"C. Subcom on Solidarity Meeting/Conference","marked":true,"optional":false,"items":[["Solidarity Meeting/Conference","Production, Technical, Costumes, Food",580840,null]]},{"name":"D. Subcom on Welcome Night","marked":true,"optional":false,"items":[["Welcome Night","Production, Technical, Costumes, Food",1568000,null]]},{"name":"E. Subcom on Cultural Shows","marked":true,"optional":false,"items":[["Cultural Shows","Production, Technical, Costumes, Food",1568000,null]]},{"name":"F. Subcom on Tourism Expo/Souvenirs/Others","marked":false,"optional":false,"items":[["Tourism Expo/Souvenirs/Others","No Budget Proposal Submitted",5000000,"No budget proposal submitted"]]},{"name":"G. EVRAA Street Party","marked":true,"optional":false,"items":[["EVRAA Street Party","Production, Technical, Costumes, Food",3306600,null]]},{"name":"H. EVRAA Couldron & Torch","marked":false,"optional":false,"items":[["EVRAA Couldron & Torch","15 torches @ 1,500, Couldron @ 5,000",27500,null]]},{"name":"I. Drone Show","marked":false,"optional":false,"items":[["Drone Show","1000 drones @ 2.850M | 500 drones @ 1.950M",2850000,null]]}]},{"name":"Administration & Management","marked":false,"groups":[{"name":"A. Subcom on Program & Invitation","marked":true,"optional":false,"items":[["Program & Invitation","Various Supplies & Materials",102103,null]]},{"name":"B. Subcom on Documentation","marked":true,"optional":false,"items":[["Documentation","Various Devices & Equipment",97000,null]]},{"name":"C. Subcom on Results & Awards","marked":true,"optional":false,"items":[["Results & Awards","Various Supplies & Materials",54000,null]]},{"name":"D. Subcom on Administrative Supplies & Materials","marked":true,"optional":false,"items":[["Administrative Supplies & Materials","Medals & Plushies",4420000,null]]},{"name":"E. Subcom on Reception & Ushering","marked":true,"optional":false,"items":[["Reception & Ushering","Various Supplies & Materials",190900,null]]},{"name":"F. Subcom on Food & Refreshments","marked":true,"optional":false,"items":[["Food & Refreshments","Food, Snacks, & Water",433000,null]]},{"name":"G. Subcom on Souvenir Program","marked":true,"optional":false,"items":[["Souvenir Program","Various Supplies & Materials",87670,null]]},{"name":"H. Subcom on Partnership & Linkages","marked":true,"optional":false,"items":[["Partnership & Linkages","Operation, Pitching, & Communication",50000,null]]}]},{"name":"EVRAA 2027 Integrated Support Services (Creative, Technical, Digital, Logistical)","marked":false,"groups":[{"name":"A. Publicity & Promotion","marked":false,"optional":false,"items":[["Publicity & Promotion","Billboards, Banners, Social Media Content, Videos",2000000,null]]},{"name":"B. EVRAA Mobile Application","marked":false,"optional":false,"items":[["EVRAA Mobile Application","Software Development Package",110000,null]]},{"name":"C. Official Photographers & Videographers","marked":false,"optional":false,"items":[["Official Photographers & Videographers","Photo & Video Package for 6 days w/ Daily Output",350000,null]]},{"name":"D. EVRAA IDs/Lanyards","marked":false,"optional":false,"items":[["EVRAA IDs/Lanyards","500 pcs @ 200 each",100000,null]]},{"name":"E. EVRAA Shirts","marked":false,"optional":false,"items":[["EVRAA Shirts","800 pcs @ 400 each",320000,null]]},{"name":"F. Graphic Designer","marked":false,"optional":false,"items":[["Graphic Designer","Branding, LED Wall Mapping, Design",125000,null]]},{"name":"G. EVRAA Arcs (Schools)","marked":false,"optional":false,"items":[["EVRAA Arcs (Schools)","1 pc * 14 Schools @ 50,000 each",700000,null]]},{"name":"H. EVRAA Banners","marked":false,"optional":false,"items":[["EVRAA Banners","10 pcs * 14 Schools @ 3,000 each",420000,null]]},{"name":"I. Directory/Maps","marked":false,"optional":false,"items":[["Directory/Maps","1 pc * 14 Schools @ 1,000 each",14000,null]]},{"name":"J. Food & Snacks","marked":false,"optional":false,"items":[["Food & Snacks","7 days * 30 pax @ 500 each",105000,null]]},{"name":"K. Playing Venues Billboards","marked":false,"optional":false,"items":[["Playing Venues Billboards","17 Playing Venues @ 1,500 each",25500,null]]},{"name":"L. Sound System @ NWSSU","marked":false,"optional":false,"items":[["Sound System @ NWSSU","4 days @ 25,000/day",100000,null]]}]}];
+
+      // Original proposal (EVRAA 2027 Final Summary.xlsx, before deliberation, NWSSU oval rehab included), kept fixed as the baseline for comparison
+      const PROPOSAL = [{"name":"Sports and Site Management Committee","marked":true,"groups":[{"name":"A. Subcom on Playing Venues","marked":false,"optional":false,"items":[["Archery","Materials, Labor, Rentals",1443969.62,null],["Arnis","Materials, Labor, Rentals",140656.01,null],["Athletics","Materials, Labor, Rentals",1161996.56,null],["Badminton","Materials, Labor, Rentals",117904,null],["Baseball","Materials, Labor, Rentals",586599.9,null],["Softball","Materials, Labor, Rentals",667500.16,null],["Basketball","Materials, Labor, Rentals",912489.5,null],["Boxing","Materials, Labor, Rentals",420753.95,null],["Football","Materials, Labor, Rentals",715655.55,null],["Gymnastics","Materials, Labor, Rentals",167820,null],["Special Games","Materials, Labor, Rentals",198855.61,null],["Taekwondo","Materials, Labor, Rentals",139179.21,null],["Tennis","Materials, Labor, Rentals",507196.65,null],["Volleyball","Materials, Labor, Rentals",166511.51,null],["Wrestling","Materials, Labor, Rentals",403566.71,null],["Wushu","Materials, Labor, Rentals",319966.5,null],["Weight Lifting","Materials, Labor, Rentals",null,null]]},{"name":"B. Subcom on Facilities & Equipment","marked":true,"optional":false,"items":[["Archery","Various entries",575788,null],["Arnis","Various entries",566320,null],["Athletics","Various entries",1203200,null],["Badminton","Various entries",391000,null],["Baseball","Various entries",295800,null],["Softball","Various entries",327360,null],["Basketball","Various entries",315500,null],["Boxing","Various entries",535100,null],["Football","Various entries",186480,null],["Gymnastics","Various entries",12563940,null],["Special Games","Various entries",102000,null],["Taekwondo","Various entries",1934270,null],["Tennis","Various entries",447035,null],["Volleyball","Various entries",416800,null],["Wrestling","Various entries",857576,null],["Wushu","Various entries",547399,null],["Weight Lifting","Various entries",222073,null]]},{"name":"C. Development of Brgy. Aguit-itan","marked":false,"optional":false,"items":[["Development of Brgy. Aguit-itan","Clearing & Grubbing & Earthworks",3353122.95,null]]},{"name":"D. EVRAA Main Stage","marked":false,"optional":false,"items":[["EVRAA Main Stage","Materials, Labor, Rentals",1500000,null]]},{"name":"E. Rehabilitation of Oval Track - from NWSSU POW","marked":false,"optional":false,"items":[["Rehabilitation of Oval Track","Rehab Costs",33442023.8,null]]}]},{"name":"Billeting & General Services Committee","marked":false,"groups":[{"name":"A. Subcom on Billeting Quarters","marked":true,"optional":false,"items":[["Carayman CES","Shower Area/CRs; Repair & Rehab; BFP Blue Drums 25 sets/school; Rubber Mats (60pcs/room, 30 rooms/school)",1928090.5,null],["Bagacay IS","Same as above",1938090.5,null],["Calbayog Pilot CES","Same as above",1913090.5,null],["Calbayog City SPED","Same as above",1851090.5,null],["CCNHS","Same as above",1896090.5,null],["Calb. East CES","Same as above",1911090.5,null],["San Policarpo NHS","Same as above",1853090.5,null],["San Policarpo CES","Same as above",1843090.5,null],["Trinidad CES","Same as above",1846090.5,null],["Trinidad NHS","Same as above",1851090.5,null],["Oquendo NHS","Same as above",1906090.5,null],["Oquendo CES","Same as above",1836090.5,null],["Tinambacan CES","Same as above",1841090.5,null],["RLMSF","Same as above",1876090.5,null]]},{"name":"B. Subcom on Billeting Quarters Management","marked":true,"optional":false,"items":[["Billeting Quarters Management","14 schools @ 50,000.00 operational expense",700000,null]]},{"name":"C. Common Billeting Requirements","marked":true,"optional":false,"items":[["Water Dispenser","5 pcs x 14 schools @6,000.00",420000,null],["Fire Extinguisher","5pcs x 14 schools @3,000.00",210000,null],["Jetmatic w/ Water Tank","1 set x 14 schools @ 300,000.00",4200000,null],["Tents","2 sets x 14 schools @2,500.00",70000,null],["Freezers","1 unit x 14 schools @15,000.00",210000,null],["Generator Set","1 unit x 14 schools @20,000.00",280000,null],["Electric Fans","10 units x 14 schools @2,500.00",350000,null],["Table Rental (Mess Hall)","20pcs x 6 days x 14 schools @60.00",100800,null],["Chair Rental (Mess Hall)","160pcs x 6 days x 14 schools @6.00.00",80640,null],["Local Staff Stipend","6pax x 6days x 14 schools @500.00",252000,null],["Water/Electric Bills","14 schools @15,000.00",210000,null]]},{"name":"D. Subcom on Waste Disposal","marked":false,"optional":false,"items":[["Waste Disposal","Various entries",981180,null]]}]},{"name":"RCU Committee","marked":false,"groups":[{"name":"A. Subcom on Security & Safety","marked":true,"optional":false,"items":[["PNP","Food Allowance & Gasoline",320511,null],["AFP","Food Allowance & Gasoline",320511,"No budget proposal submitted"],["CDRRMO","Various Supplies, Food, Fuel",834500,null],["Hand-held Radios","100 units @ 3,000 each",300000,null]]},{"name":"B. Subcom on Medical Services","marked":true,"optional":false,"items":[["Medical Services","Food, Fuel, & Medical Supplies",6275231.05,null]]},{"name":"C. Subcom on Transportation & Traffic Management","marked":false,"optional":false,"items":[["Transportation & Traffic Management","Food, Barricades, Vehicle Rentals, Supplies, & Gasoline",1247400,null]]},{"name":"D. Subcom on Barangay Operation Support","marked":false,"optional":false,"items":[["Barangay Operation Support","10 tanods x 14 schools x 6 days @500.00",420000,null]]}]},{"name":"Special Events Committee","marked":false,"groups":[{"name":"A. Subcom on 100 Days Countdown","marked":true,"optional":false,"items":[["100 Days Countdown","Production, Technical, Costumes, Food",230700,null]]},{"name":"B. Subcom on Opening & Parade","marked":true,"optional":false,"items":[["Opening & Parade","Production, Technical, Costumes, Food",11455000,null]]},{"name":"C. Subcom on Solidarity Meeting/Conference","marked":true,"optional":false,"items":[["Solidarity Meeting/Conference","Production, Technical, Costumes, Food",580840,null]]},{"name":"D. Subcom on Welcome Night","marked":true,"optional":false,"items":[["Welcome Night","Production, Technical, Costumes, Food",1568000,null]]},{"name":"E. Subcom on Cultural Shows","marked":true,"optional":false,"items":[["Cultural Shows","Production, Technical, Costumes, Food",1568000,null]]},{"name":"F. Subcom on Tourism Expo/Souvenirs/Others","marked":false,"optional":false,"items":[["Tourism Expo/Souvenirs/Others","No Budget Proposal Submitted",5000000,"No budget proposal submitted"]]},{"name":"G. EVRAA Street Party","marked":true,"optional":false,"items":[["EVRAA Street Party","Production, Technical, Costumes, Food",2877600,null]]}]},{"name":"Administration & Management","marked":false,"groups":[{"name":"A. Subcom on Program & Invitation","marked":true,"optional":false,"items":[["Program & Invitation","Various Supplies & Materials",102103,null]]},{"name":"B. Subcom on Documentation","marked":true,"optional":false,"items":[["Documentation","Various Devices & Equipment",97000,null]]},{"name":"C. Subcom on Results & Awards","marked":true,"optional":false,"items":[["Results & Awards","Various Supplies & Materials",54000,null]]},{"name":"D. Subcom on Administrative Supplies & Materials","marked":true,"optional":false,"items":[["Administrative Supplies & Materials","Medals & Plushies",3400000,null]]},{"name":"E. Subcom on Reception & Ushering","marked":true,"optional":false,"items":[["Reception & Ushering","Various Supplies & Materials",190900,null]]},{"name":"F. Subcom on Food & Refreshments","marked":true,"optional":false,"items":[["Food & Refreshments","Food, Snacks, & Water",775000,null]]},{"name":"G. Subcom on Souvenir Program","marked":true,"optional":false,"items":[["Souvenir Program","Various Supplies & Materials",87670,null]]},{"name":"H. Subcom on Partnership & Linkages","marked":true,"optional":false,"items":[["Partnership & Linkages","Operation, Pitching, & Communication",50000,null]]}]},{"name":"EVRAA 2027 Secretariat","marked":false,"groups":[{"name":"A. Publicity & Promotion","marked":false,"optional":false,"items":[["Publicity & Promotion","Billboards, Banners, Social Media Content, Videos",2000000,null]]},{"name":"B. EVRAA Mobile Application","marked":false,"optional":false,"items":[["EVRAA Mobile Application","Software Development Package",110000,null]]},{"name":"C. Official Photographers & Videographers","marked":false,"optional":false,"items":[["Official Photographers & Videographers","Photo & Video Package for 6 days w/ Daily Output",350000,null]]},{"name":"D. EVRAA IDs/Lanyards","marked":false,"optional":false,"items":[["EVRAA IDs/Lanyards","500 pcs @ 200 each",100000,null]]},{"name":"E. EVRAA Polo Shirts","marked":false,"optional":false,"items":[["EVRAA Polo Shirts","1000 pcs @ 400 each",400000,null]]},{"name":"F. Graphic Designer","marked":false,"optional":false,"items":[["Graphic Designer","Branding, LED Wall Mapping, Design",125000,null]]},{"name":"G. EVRAA Arcs (Schools)","marked":false,"optional":false,"items":[["EVRAA Arcs (Schools)","1 pc * 14 Schools @ 50,000 each",700000,null]]},{"name":"H. EVRAA Banners","marked":false,"optional":false,"items":[["EVRAA Banners","10 pcs * 14 Schools @ 3,000 each",420000,null]]},{"name":"I. Directory/Maps","marked":false,"optional":false,"items":[["Directory/Maps","1 pc * 14 Schools @ 1,000 each",14000,null]]},{"name":"J. Food & Snacks","marked":false,"optional":false,"items":[["Food & Snacks","7 days * 30 pax @ 500 each",105000,null]]},{"name":"K. Playing Venues Billboards","marked":false,"optional":false,"items":[["Playing Venues Billboards","17 Playing Venues @ 1,500 each",25500,null]]}]}];
+
+      // Detailed budget files, matched by committee, subcommittee or budget line name (letter prefix and "Subcom on" ignored)
+      const LINKS = {
+        'sports and site management committee': [
+          { href: 'Summary%20of%20Budget%20Proposals/1.%20Sports%20and%20Site%20Management%20-%20Playing%20Venues.xlsx', label: 'Proposal summary' },
+        ],
+        'billeting & general services committee': [
+          { href: 'Summary%20of%20Budget%20Proposals/2.%20Billeting%20%26%20General%20Services.xlsx', label: 'Proposal summary' },
+        ],
+        'rcu committee': [
+          { href: 'Summary%20of%20Budget%20Proposals/3.%20RCU.xlsx', label: 'Proposal summary' },
+        ],
+        'special events committee': [
+          { href: 'Summary%20of%20Budget%20Proposals/4.%20Special%20Events%20-%20Tourism.xlsx', label: 'Tourism proposals' },
+          { href: 'Summary%20of%20Budget%20Proposals/4.%20Special%20Events%20-%20CACO.xls', label: 'CACO proposals' },
+        ],
+        'administration & management': [
+          { href: 'Summary%20of%20Budget%20Proposals/5.%20Administration%20%26%20Management.xlsx', label: 'Proposal summary' },
+        ],
+        'evraa 2027 integrated support services (creative, technical, digital, logistical)': [
+          { href: 'Summary%20of%20Budget%20Proposals/6.%20EVRAA%202027%20Integrated%20Support%20Services%20(Creative%2C%20Technical%2C%20Digital%2C%20Logistical).xlsx', label: 'Proposal summary' },
+        ],
+      };
+      const linkKey = (name) => String(name).toLowerCase().replace(/^[a-z]\.\s+/, '').replace(/^sub ?com(mittee)? on\s+/, '').replace(/\s+/g, ' ').trim();
+
+      const $ = (id) => document.getElementById(id);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const peso = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' });
+      const money = (amount) => amount === null || amount === undefined ? 'Not specified' : peso.format(amount);
+      const compact = (amount) => `₱${(amount / 1e6).toFixed(2)}M`;
+      const pct = (part, whole) => whole ? `${(part / whole * 100).toFixed(1)}%` : '—';
+      const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+      const sumItems = (items) => items.reduce((sum, item) => sum + (item[2] || 0), 0);
+      const groupTotal = (group) => group.total ?? sumItems(group.items);
+      const fileLink = (name) => (LINKS[linkKey(name)] || []).map(({ href, label }) => `<a class="file-link" href="${escapeHtml(href)}" data-proposal-href="${escapeHtml(href)}" data-proposal-title="${escapeHtml(`${name} — ${label}`)}" aria-label="View ${escapeHtml(label)} for ${escapeHtml(name)}">${escapeHtml(label)} ↗</a>`).join('');
+      const proposalDialog = $('proposal-dialog');
+      const proposalCache = new Map();
+      let proposalWorkbook = null;
+      let proposalRequest = 0;
+      function renderProposalSheet(sheetName) {
+        const sheet = proposalWorkbook?.Sheets[sheetName];
+        if (!sheet) throw new Error(`Worksheet "${sheetName}" is unavailable.`);
+        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: '', blankrows: true });
+        const nonEmptyRows = rows.map((row, index) => ({ row, index })).filter(({ row }) => row.some((cell) => cell !== '' && cell !== null && cell !== undefined));
+        const columnCount = Math.max(0, ...nonEmptyRows.map(({ row }) => row.length));
+        if (!columnCount) {
+          $('proposal-sheet').innerHTML = '<p class="empty">This worksheet has no visible cell values.</p>';
+          $('proposal-status').textContent = `${sheetName} · no cell values`;
+          return;
+        }
+        const columns = Array.from({ length: columnCount }, (_, index) => {
+          let label = '';
+          for (let value = index + 1; value; value = Math.floor((value - 1) / 26)) label = String.fromCharCode(65 + (value - 1) % 26) + label;
+          return label;
+        });
+        const cellText = (value) => typeof value === 'number'
+          ? new Intl.NumberFormat('en-PH', { maximumFractionDigits: 2 }).format(value)
+          : escapeHtml(value instanceof Date ? value.toLocaleDateString('en-PH') : value);
+        const head = `<thead><tr><th scope="col">Row</th>${columns.map((column) => `<th scope="col">${column}</th>`).join('')}</tr></thead>`;
+        const body = nonEmptyRows.map(({ row, index }) => `<tr><th scope="row">${index + 1}</th>${columns.map((_, column) => `<td>${row[column] === '' || row[column] === null || row[column] === undefined ? '' : cellText(row[column])}</td>`).join('')}</tr>`).join('');
+        $('proposal-sheet').innerHTML = `<table>${head}<tbody>${body}</tbody></table>`;
+        $('proposal-status').textContent = `${sheetName} · ${nonEmptyRows.length} rows`;
+      }
+      function showProposalWorkbook(workbook, fileName) {
+        proposalWorkbook = workbook;
+        const selector = $('proposal-sheet-select');
+        selector.innerHTML = workbook.SheetNames.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+        const summarySheet = workbook.SheetNames.find((name) => /summary/i.test(name)) || workbook.SheetNames[0];
+        if (!summarySheet) throw new Error('The selected workbook has no worksheets.');
+        selector.value = summarySheet;
+        selector.hidden = workbook.SheetNames.length < 2;
+        $('proposal-sheet-label').hidden = selector.hidden;
+        $('proposal-file-pick').hidden = true;
+        $('proposal-status').textContent = fileName;
+        renderProposalSheet(summarySheet);
+      }
+      async function openProposal(href, title) {
+        const request = ++proposalRequest;
+        $('proposal-dialog-title').textContent = title;
+        $('proposal-status').textContent = 'Loading proposal details…';
+        $('proposal-sheet').replaceChildren();
+        $('proposal-sheet-select').hidden = true;
+        $('proposal-sheet-label').hidden = true;
+        $('proposal-file-pick').hidden = true;
+        $('proposal-file-input').value = '';
+        if (!proposalDialog.open) proposalDialog.showModal();
+        try {
+          let workbook = proposalCache.get(href);
+          if (!workbook) {
+            const response = await fetch(href, { cache: 'no-store' });
+            if (!response.ok) throw new Error(`Request failed with HTTP ${response.status}.`);
+            workbook = XLSX.read(await response.arrayBuffer(), { type: 'array' });
+            proposalCache.set(href, workbook);
+          }
+          if (request !== proposalRequest || !proposalDialog.open) return;
+          showProposalWorkbook(workbook, href.split('/').pop());
+        } catch (error) {
+          if (request !== proposalRequest || !proposalDialog.open) return;
+          console.warn('Could not load proposal summary:', error);
+          $('proposal-status').textContent = `Could not load this proposal automatically. ${error.message}`;
+          $('proposal-file-pick').hidden = false;
+        }
+      }
+      // Change from the original proposal: signed amount, signed percent, colour class and plain-language sentence
+      const signed = (delta, fmt = money) => delta > 0.005 ? `+${fmt(delta)}` : delta < -0.005 ? `−${fmt(-delta)}` : fmt(0);
+      const changePct = (delta, from) => !from ? 'new' : `${delta > 0.005 ? '+' : delta < -0.005 ? '−' : ''}${Math.abs(delta / from * 100).toFixed(1)}%`;
+      const changeClass = (delta) => delta < -0.005 ? 'is-down' : delta > 0.005 ? 'is-up' : 'is-same';
+      const changeSentence = (now, was) => {
+        const delta = now - was;
+        if (delta < -0.005) return `${money(-delta)} (${pct(-delta, was)}) below the original proposal of ${money(was)}`;
+        if (delta > 0.005) return `${money(delta)} (${pct(delta, was)}) above the original proposal of ${money(was)}`;
+        return `Same as the original proposal of ${money(was)}`;
+      };
+      const changeTip = (now, was) => was === null || was === undefined ? '<br><span>Not in the original proposal</span>' : `<br><span>Original ${money(was)} · ${signed((now || 0) - was)} (${changePct((now || 0) - was, was)})</span>`;
+      // A budget line with a note gets a dotted underline; the note shows as a tooltip on hover, focus or tap
+      const withNote = (html, notes, alert) => {
+        if (!notes.length) return html;
+        const text = notes.join(' · ');
+        return `<span class="has-note${alert ? ' is-alert' : ''}" tabindex="0" data-tip="${escapeHtml(`<b>Note</b><span>${escapeHtml(text)}</span>`)}">${html}<span class="sr-only"> (Note: ${escapeHtml(text)})</span></span>`;
+      };
+      // Recomputes every total from the line items so the page always reconciles
+      function normalize(committees) {
+        committees.forEach((committee) => {
+          committee.groups.forEach((group) => { group.total = sumItems(group.items); });
+          committee.total = committee.groups.filter((g) => !g.optional).reduce((sum, g) => sum + g.total, 0);
+          committee.optionalTotal = committee.groups.filter((g) => g.optional).reduce((sum, g) => sum + g.total, 0);
+        });
+        const base = committees.reduce((sum, c) => sum + c.total, 0);
+        const optional = committees.reduce((sum, c) => sum + c.optionalTotal, 0);
+        return { committees, base, optional };
+      }
+
+      // Reads Sheet1 of the summary workbook: numbered committees, lettered subcommittees, item rows
+      function parseWorkbook(workbook) {
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: null, blankrows: true });
+        const clean = (value) => value === null || value === undefined ? '' : String(value).replace(/ /g, ' ').replace(/\s*\n\s*/g, '; ').replace(/\s+/g, ' ').replace(/\s+,/g, ',').replace(/,(?=[A-Za-z])/g, ', ').trim();
+        const num = (value) => {
+          if (typeof value === 'number') return value;
+          if (typeof value !== 'string') return null;
+          const stripped = value.replace(/[₱,\s]/g, '');
+          return stripped && !isNaN(stripped) ? Number(stripped) : null;
+        };
+        const titleCase = (text) => text === text.toUpperCase() && /[A-Z]{3}/.test(text)
+          ? text.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(And|Of|On|For|W\/)\b/g, (m) => m.toLowerCase())
+          : text;
+        const noBudget = /\(?\s*no budget proposal submitted\s*\)?/i;
+        const header = rows.findIndex((row) => row && /committee/i.test(clean(row[0])) && /amount/i.test(clean(row[2])));
+        if (header === -1) throw new Error('Could not find the "Committee/Subcoms | Details | Amount" header row.');
+
+        const committees = [];
+        let committee = null;
+        let group = null;
+        let lastDetails = '';
+        const reported = {};
+        for (let r = header + 1; r < rows.length; r++) {
+          const row = rows[r] || [];
+          const a = clean(row[0]);
+          const b = clean(row[1]);
+          const cText = typeof row[2] === 'string' ? clean(row[2]) : '';
+          const marked = /✅|✓|✔/.test(clean(row[4]));
+          if (/^prepared by/i.test(a)) break;
+          if (/grand total/i.test(cText)) { reported[/oval|nwssu|w\//i.test(cText) ? 'withOptional' : 'base'] = num(row[3]); continue; }
+          if (/subtotal/i.test(cText) || (!a && !b)) continue;
+
+          let match = a.match(/^(\d+)\.\s*(.+)$/);
+          if (match) {
+            committee = { name: titleCase(match[2]), marked, groups: [] };
+            committees.push(committee);
+            group = null;
+            continue;
+          }
+          if (!committee) continue;
+          match = a.match(/^([A-Z])\.\s+(.+)$/);
+          if (match) {
+            const rest = match[2];
+            const optional = /optional/i.test(b) || /optional/i.test(rest);
+            group = { name: `${match[1]}. ${rest.replace(/NwSSU/g, 'NWSSU')}`, marked, optional, items: [] };
+            committee.groups.push(group);
+            lastDetails = '';
+            const amount = num(row[2]) ?? num(row[3]);
+            if (amount !== null || b) {
+              const itemName = rest.replace(/^sub ?com(mittee)? on\s+/i, '').replace(/\s*-\s*from .*$/i, '');
+              const note = noBudget.test(b) ? 'No budget proposal submitted' : undefined;
+              group.items.push([itemName, b || (optional ? 'Optional' : ''), amount, note]);
+            }
+            continue;
+          }
+          if (!a) continue;
+          if (!group) { group = { name: committee.name, items: [] }; committee.groups.push(group); }
+          let details = b;
+          if (/^-?\s*do\s*-?$/i.test(details)) details = lastDetails;
+          else if (!details && lastDetails) details = 'Same as above';
+          else lastDetails = details;
+          const note = noBudget.test(a) || noBudget.test(b) ? 'No budget proposal submitted' : undefined;
+          group.items.push([a.replace(noBudget, '').trim(), details, num(row[2]), note]);
+          if (marked) group.marked = true;
+        }
+        if (!committees.length) throw new Error('No committees found in the workbook.');
+        return { ...normalize(committees), reported };
+      }
+
+      // ---------- State ----------
+      let data = normalize(structuredClone(SNAPSHOT));
+      const state = { showFinal: false, includeOptional: false, selected: 'all', query: '', sort: 'source', collapsed: new Set() };
+      const filter = $('committee-filter');
+      const lineCount = () => data.committees.reduce((sum, c) => sum + c.groups.reduce((g, group) => g + group.items.length, 0), 0);
+      const optionalGroups = () => data.committees.flatMap((c) => c.groups.filter((g) => g.optional).map((g) => ({ committee: c, group: g })));
+
+      // ---------- Comparison with the original proposal ----------
+      const proposal = normalize(structuredClone(PROPOSAL));
+      // Budget lines renamed in the final budget (final name → proposal name), so they still match their proposal line
+      const RENAMED = { 'evraa shirts': 'evraa polo shirts' };
+      const matchKey = (name) => RENAMED[linkKey(name)] || linkKey(name);
+      const itemKey = (group, item) => `${matchKey(group.name)}|${matchKey(item[0])}`;
+      let cmp;
+      // Matches each final budget line to its proposal line (same subcommittee + line name) and collects proposal lines that were dropped
+      function compare() {
+        const original = new Map();
+        proposal.committees.forEach((committee) => committee.groups.forEach((group) => group.items.forEach((item) => original.set(itemKey(group, item), { committee, group, item }))));
+        const byItem = new Map();
+        data.committees.forEach((committee, index) => committee.groups.forEach((group) => group.items.forEach((item) => {
+          const key = itemKey(group, item);
+          const hit = original.get(key);
+          byItem.set(item, hit ? { amount: hit.item[2], movedFrom: hit.committee !== proposalCommittee(committee.name, index) ? hit.committee.name : null } : null);
+        })));
+        return { byItem };
+      }
+      // Committees match by name, or by position when a committee was renamed in the final budget
+      const proposalCommittee = (name, index) => proposal.committees.find((c) => linkKey(c.name) === linkKey(name)) || proposal.committees[index];
+      // The NWSSU oval track rehabilitation is always part of the original proposal
+      const proposalRehab = proposal.committees.flatMap((c) => c.groups).find((g) => /nwssu/i.test(g.name));
+      const groupOriginal = (group) => group.items.reduce((sum, item) => sum + (cmp.byItem.get(item)?.amount || 0), 0);
+
+      // ---------- Tooltip ----------
+      const tooltip = $('tooltip');
+      const showTip = (event, html) => {
+        tooltip.innerHTML = html;
+        tooltip.classList.add('show');
+        const x = Math.min(event.clientX + 14, window.innerWidth - tooltip.offsetWidth - 8);
+        const y = event.clientY + 16 + tooltip.offsetHeight > window.innerHeight ? event.clientY - tooltip.offsetHeight - 10 : event.clientY + 16;
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
+      };
+      const hideTip = () => tooltip.classList.remove('show');
+      document.addEventListener('pointermove', (event) => {
+        const target = event.target.closest('[data-tip]');
+        target ? showTip(event, target.dataset.tip) : hideTip();
+      });
+      document.addEventListener('scroll', hideTip, { passive: true });
+      // Keyboard focus and taps (touch screens have no hover) show the tooltip under the element
+      const tipFor = (target) => { const r = target.getBoundingClientRect(); showTip({ clientX: r.left, clientY: r.bottom - 8 }, target.dataset.tip); };
+      document.addEventListener('focusin', (event) => { const target = event.target.closest?.('[data-tip]'); if (target) tipFor(target); });
+      document.addEventListener('focusout', hideTip);
+      document.addEventListener('click', (event) => { const target = event.target.closest('.has-note'); if (target) tipFor(target); });
+
+      // ---------- Hero ----------
+      let heroValue = 0;
+      let heroFrame = 0;
+      function animateHero(to, duration = 700) {
+        // Start from whatever is on screen so rapid toggles don't jump or fight each other
+        const from = heroValue;
+        heroValue = to;
+        cancelAnimationFrame(heroFrame);
+        if (reduceMotion || from === to) { $('hero-amount').textContent = money(to); return; }
+        const start = performance.now();
+        let shown = from;
+        const step = (now) => {
+          const t = Math.max(0, Math.min((now - start) / duration, 1));
+          const eased = 1 - Math.pow(1 - t, 3);
+          shown = from + (to - from) * eased;
+          $('hero-amount').textContent = money(shown);
+          heroValue = t < 1 ? shown : to;
+          if (t < 1) heroFrame = requestAnimationFrame(step);
+        };
+        heroFrame = requestAnimationFrame(step);
+      }
+
+      function renderHero() {
+        const { base, optional } = data;
+        const hasOptional = optional > 0;
+        const on = state.includeOptional && hasOptional;
+        const optionalLabel = optionalGroups().map(({ group }) => group.items[0]?.[0] || group.name).join(', ');
+        // The card opens on the original proposal (NWSSU rehab included); "Show Final Budget" counts it down to the final figure,
+        // and only then can any optional add-on be added to or removed from the final budget
+        const showFinal = state.showFinal;
+        $('optional-toggle-wrap').hidden = !hasOptional || !showFinal;
+        $('optional-toggle-text').textContent = on ? `Remove ${optionalLabel} (−${compact(optional)})` : `Add ${optionalLabel} (+${compact(optional)})`;
+        const now = on ? base + optional : base;
+        const was = proposal.base + (on ? proposal.optional : 0);
+        const original = proposal.base + proposal.optional;
+        $('hero-label').textContent = showFinal
+          ? `Final budget · ${!hasOptional ? 'grand total' : on ? `with ${optionalLabel}` : `without ${optionalLabel}`}`
+          : 'Original proposal · grand total';
+        $('hero-note').textContent = showFinal
+          ? changeSentence(now, original)
+          : `As first proposed, before deliberation${proposalRehab ? ` · includes ${money(proposalRehab.total)} for the NWSSU oval track rehabilitation` : ''}`;
+        $('hero-delta').textContent = `${signed(now - original, compact)} (${changePct(now - original, original)})`;
+        $('hero-total').classList.toggle('is-final', showFinal);
+        $('allocation-sub').textContent = on ? 'Final totals including optional items (hatched)' : 'Final totals by committee';
+        $('stat-change').textContent = signed(now - was, compact);
+        $('stat-change').title = signed(now - was);
+        $('stat-change-note').textContent = `${changePct(now - was, was)} vs. original proposal`;
+        animateHero(showFinal ? now : original, 1400);
+        renderTopShare(on);
+      }
+
+      // Largest committee's share of whichever grand total is active (base, or base + optional)
+      function renderTopShare(on) {
+        const { base, optional, committees } = data;
+        const totalOf = (c) => c.total + (on ? c.optionalTotal : 0);
+        const top = committees.reduce((max, c) => totalOf(c) > totalOf(max) ? c : max, committees[0]);
+        $('stat-top').textContent = pct(totalOf(top), on ? base + optional : base);
+        $('stat-top-note').textContent = `${top.name}${on ? ' · incl. optional' : ''}`;
+        $('stat-top-note').title = `${money(totalOf(top))} of ${money(on ? base + optional : base)}`;
+      }
+
+      function renderStatic() {
+        const { optional, committees } = data;
+        $('stat-original').textContent = compact(proposal.base);
+        $('stat-original').title = money(proposal.base);
+        $('stat-original-note').textContent = proposalRehab ? `Incl. ${compact(proposalRehab.total)} NWSSU oval rehab` : 'As first submitted';
+        $('line-count').textContent = new Intl.NumberFormat().format(lineCount());
+        $('mark-legend').hidden = !committees.some((c) => c.marked || c.groups.some((g) => g.marked));
+        const optionals = optionalGroups();
+        $('optional-box').hidden = !optionals.length;
+        if (optionals.length) {
+          const owner = optionals[0].committee;
+          $('optional-kicker').textContent = `Optional · ${optionals.length === 1 ? (optionals[0].group.name.match(/from (.+)$/i)?.[1] || 'not in base total') : `${optionals.length} items`}`;
+          $('optional-amount').textContent = money(optional);
+          $('optional-name').textContent = optionals.map(({ group }) => group.items[0]?.[0] || group.name).join(' · ');
+          $('optional-foot').innerHTML = `${escapeHtml(owner.name)} subtotal with optional item: <strong>${money(owner.total + owner.optionalTotal)}</strong>`;
+        }
+
+        const options = ['<option value="all">All committees</option>', ...committees.map((c, i) => `<option value="${i}">${escapeHtml(c.name)}</option>`)];
+        filter.innerHTML = options.join('');
+        if (state.selected !== 'all' && !committees[Number(state.selected)]) state.selected = 'all';
+        filter.value = state.selected;
+        // Drop collapsed flags for committees that no longer exist after a reload
+        state.collapsed.forEach((index) => { if (!committees[index]) state.collapsed.delete(index); });
+      }
+
+      // ---------- Charts ----------
+      function renderAllocations() {
+        const { committees, base, optional } = data;
+        const extra = (committee) => state.includeOptional ? committee.optionalTotal : 0;
+        const originalOf = (committee) => { const p = proposalCommittee(committee.name, committees.indexOf(committee)); return p ? p.total + (state.includeOptional ? p.optionalTotal : 0) : 0; };
+        const whole = base + (state.includeOptional ? optional : 0);
+        const maxTotal = Math.max(...committees.map((c) => Math.max(c.total + extra(c), originalOf(c))), 1);
+        const list = $('allocation-list');
+        list.classList.toggle('has-active', state.selected !== 'all');
+        list.innerHTML = committees.map((committee, index) => {
+          const total = committee.total + extra(committee);
+          const was = originalOf(committee);
+          const tip = `<b>${escapeHtml(committee.name)}</b><span>${money(total)} · ${pct(total, whole)} of total</span>${extra(committee) ? `<br><span>incl. ${money(extra(committee))} optional</span>` : ''}${changeTip(total, was)}<br><span>${committee.groups.length} subcommittees</span>`;
+          return `
+          <button type="button" class="allocation${state.selected === String(index) ? ' is-active' : ''}" data-index="${index}" data-tip="${escapeHtml(tip)}" aria-pressed="${state.selected === String(index)}">
+            <span class="allocation-name">${escapeHtml(committee.name)}</span>
+            <span class="allocation-track"><i class="allocation-ghost" style="width:${was / maxTotal * 100}%"></i><i class="allocation-fill" style="width:${committee.total / maxTotal * 100}%"></i>${extra(committee) ? `<i class="allocation-fill optional-fill" style="width:calc(${extra(committee) / maxTotal * 100}% - 2px)"></i>` : ''}</span>
+            <span class="allocation-share">${pct(total, whole)}</span>
+            <span class="allocation-amount">${money(total)}<small class="${changeClass(total - was)}">${signed(total - was, compact)} (${changePct(total - was, was)})</small></span>
+          </button>`;
+        }).join('');
+      }
+
+      function renderBreakdown() {
+        const { committees } = data;
+        let rows;
+        const clear = $('breakdown-clear');
+        if (state.selected === 'all') {
+          $('breakdown-title').textContent = 'Largest budget lines';
+          $('breakdown-sub').textContent = 'Top 6 items across all committees';
+          rows = committees.flatMap((committee) => committee.groups.filter((group) => !group.optional || state.includeOptional)
+            .flatMap((group) => group.items.map((item) => ({ name: item[0], sub: `${committee.name} · ${group.name}`, amount: item[2], was: cmp.byItem.get(item)?.amount, optional: group.optional }))))
+            .filter((row) => row.amount).sort((a, b) => b.amount - a.amount).slice(0, 6);
+          clear.hidden = true;
+        } else {
+          const committee = committees[Number(state.selected)];
+          $('breakdown-title').textContent = committee.name;
+          $('breakdown-sub').textContent = 'Subcommittee breakdown';
+          rows = committee.groups.filter((group) => !group.optional || state.includeOptional)
+            .map((group) => ({ name: group.name, sub: `${group.items.length} budget line${group.items.length === 1 ? '' : 's'}`, amount: groupTotal(group), was: groupOriginal(group), optional: group.optional }))
+            .sort((a, b) => b.amount - a.amount);
+          clear.hidden = false;
+        }
+        const max = Math.max(...rows.map((row) => row.amount), 1);
+        const sum = rows.reduce((total, row) => total + row.amount, 0);
+        $('breakdown-list').innerHTML = rows.map((row) => {
+          const tip = `<b>${escapeHtml(row.name)}</b><span>${escapeHtml(row.sub)}</span><br><span>${money(row.amount)}${state.selected !== 'all' ? ` · ${pct(row.amount, sum)} of committee` : ''}</span>${changeTip(row.amount, row.was)}`;
+          return `<div class="breakdown${row.optional ? ' is-optional' : ''}" data-tip="${escapeHtml(tip)}">
+            <div class="breakdown-top"><span>${escapeHtml(row.name)}${row.optional ? ' (optional)' : ''}</span><span>${compact(row.amount)}</span></div>
+            <div class="breakdown-track"><i class="breakdown-fill" style="width:${row.amount / max * 100}%"></i></div>
+          </div>`;
+        }).join('');
+      }
+
+      // ---------- Table ----------
+      // Wraps every case-insensitive match of the query in <mark>, escaping all text
+      function highlight(value) {
+        const text = String(value);
+        if (!state.query) return escapeHtml(text);
+        const lower = text.toLocaleLowerCase();
+        let out = '';
+        let from = 0;
+        let at = lower.indexOf(state.query);
+        while (at !== -1) {
+          out += escapeHtml(text.slice(from, at)) + `<mark>${escapeHtml(text.slice(at, at + state.query.length))}</mark>`;
+          from = at + state.query.length;
+          at = lower.indexOf(state.query, from);
+        }
+        return out + escapeHtml(text.slice(from));
+      }
+
+      function visibleRows() {
+        const result = [];
+        data.committees.forEach((committee, committeeIndex) => {
+          if (state.selected !== 'all' && state.selected !== String(committeeIndex)) return;
+          const groups = committee.groups.map((group) => {
+            let items = group.items.filter((item) => [committee.name, group.name, ...item].join(' ').toLocaleLowerCase().includes(state.query));
+            if (state.sort !== 'source') {
+              const dir = state.sort === 'desc' ? -1 : 1;
+              items = [...items].sort((a, b) => ((a[2] ?? -Infinity) - (b[2] ?? -Infinity)) * dir);
+            }
+            return { group, items };
+          }).filter(({ items }) => items.length);
+          if (groups.length) result.push({ committee, committeeIndex, groups });
+        });
+        return result;
+      }
+
+      function renderTable() {
+        const total = lineCount();
+        const rows = visibleRows();
+        let matches = 0;
+        let matchedAmount = 0;
+        const markup = rows.map(({ committee, committeeIndex, groups }) => {
+          const groupMarkup = groups.map(({ group, items }) => {
+            matches += items.length;
+            matchedAmount += items.reduce((sum, item) => sum + (group.optional && !state.includeOptional ? 0 : item[2] || 0), 0);
+            const itemRows = items.map((item) => {
+              const [name, details, amount, note] = item;
+              const was = cmp.byItem.get(item);
+              const notes = [note, was?.movedFrom && `Moved from ${was.movedFrom}`, !was && 'New in the final budget', amount === null && !note && 'Removed from the final budget'].filter(Boolean);
+              return `
+              <tr class="item-row${group.optional ? ' optional-row' : ''}">
+                <td>${withNote(highlight(name), notes, !!(note || was?.movedFrom || !was))}${group.optional ? ' <strong>(Optional)</strong>' : ''}</td>
+                <td>${details ? highlight(details) : '—'}</td>
+                <td class="amount">${amount === null ? 'Removed from the Budget' : money(amount)}</td>
+              </tr>`;
+            }).join('');
+            const subtotal = group.items.length > 1 && !state.query ? `<tr class="subtotal-row"><td colspan="2">${escapeHtml(group.name)} subtotal</td><td class="amount">${money(group.total)}</td></tr>` : '';
+            return `<tr class="subcommittee-row"><th colspan="3">${highlight(group.name)}${group.marked ? '<span class="source-mark" title="Checkmark in source">✓ Source marked</span>' : ''}</th></tr>${itemRows}${subtotal}`;
+          }).join('');
+          const optionalText = committee.optionalTotal ? `<span class="panel-sub"> · ${state.includeOptional ? `${money(committee.total + committee.optionalTotal)} with optional item` : 'base subtotal excludes optional item'}</span>` : '';
+          const collapsed = state.collapsed.has(committeeIndex) && !state.query;
+          return `<tbody class="${collapsed ? 'collapsed' : ''}"><tr class="committee-row"><th colspan="3"><div class="committee-head"><button type="button" class="committee-toggle" data-collapse="${committeeIndex}" aria-expanded="${!collapsed}"><span class="chevron" aria-hidden="true"></span><span>${highlight(committee.name)}</span>${committee.marked ? '<span class="source-mark" title="Checkmark in source">✓ Source marked</span>' : ''}<span class="committee-total">${money(committee.total)}${optionalText}</span></button>${fileLink(committee.name)}</div></th></tr>${groupMarkup}</tbody>`;
+        }).join('');
+
+        const committeeName = state.selected !== 'all' ? data.committees[Number(state.selected)]?.name : '';
+        $('table-area').innerHTML = markup ? `<table><thead><tr><th scope="col">Budget line</th><th scope="col">Details</th><th scope="col" class="amount">Final budget</th></tr></thead>${markup}</table>` : `<div class="empty">No budget lines match “${escapeHtml(state.query)}”${committeeName ? ` in ${escapeHtml(committeeName)}` : ''}. <button type="button" class="link-btn" id="reset-filters">Clear filters</button></div>`;
+        const filtered = state.query || state.selected !== 'all';
+        $('row-count').innerHTML = `${new Intl.NumberFormat().format(matches)} of ${new Intl.NumberFormat().format(total)} budget lines shown${filtered && matches ? ` · <span class="result-summary">${money(matchedAmount)}</span> in view` : ''}`;
+        $('toggle-all').textContent = state.collapsed.size === data.committees.length ? 'Expand all' : 'Collapse all';
+      }
+
+      function renderAll() {
+        renderAllocations();
+        renderBreakdown();
+        renderTable();
+      }
+
+      function renderEverything() {
+        cmp = compare();
+        renderStatic();
+        renderHero();
+        renderAll();
+      }
+
+      // ---------- Interaction ----------
+      function selectCommittee(value) {
+        state.selected = value;
+        filter.value = value;
+        if (value !== 'all') state.collapsed.delete(Number(value));
+        renderAll();
+      }
+
+      $('allocation-list').addEventListener('click', (event) => {
+        const bar = event.target.closest('.allocation');
+        if (!bar) return;
+        selectCommittee(state.selected === bar.dataset.index ? 'all' : bar.dataset.index);
+      });
+      $('breakdown-clear').addEventListener('click', () => selectCommittee('all'));
+      filter.addEventListener('change', () => selectCommittee(filter.value));
+      $('sort-order').addEventListener('change', (event) => { state.sort = event.target.value; renderTable(); });
+      const search = $('budget-search');
+      search.addEventListener('input', () => { state.query = search.value.trim().toLocaleLowerCase(); renderTable(); });
+      $('final-toggle').addEventListener('change', (event) => {
+        state.showFinal = event.target.checked;
+        // The optional add-on only applies to the final budget, so hiding the final budget also removes it
+        if (!state.showFinal && state.includeOptional) {
+          state.includeOptional = false;
+          $('optional-toggle').checked = false;
+          renderAll();
+        }
+        // Fade the label and note out, swap their text, then fade back in while the figure counts
+        const card = $('hero-total');
+        card.classList.add('is-swapping');
+        setTimeout(() => { renderHero(); card.classList.remove('is-swapping'); }, reduceMotion ? 0 : 250);
+      });
+      $('optional-toggle').addEventListener('change', (event) => {
+        state.includeOptional = event.target.checked;
+        renderHero();
+        renderAll();
+      });
+      $('table-area').addEventListener('click', (event) => {
+        if (event.target.id === 'reset-filters') {
+          search.value = '';
+          state.query = '';
+          selectCommittee('all');
+          return;
+        }
+        const proposalLink = event.target.closest('[data-proposal-href]');
+        if (proposalLink) {
+          event.preventDefault();
+          openProposal(proposalLink.dataset.proposalHref, proposalLink.dataset.proposalTitle);
+          return;
+        }
+        const toggle = event.target.closest('[data-collapse]');
+        if (!toggle) return;
+        const index = Number(toggle.dataset.collapse);
+        state.collapsed.has(index) ? state.collapsed.delete(index) : state.collapsed.add(index);
+        const body = toggle.closest('tbody');
+        body.classList.toggle('collapsed', state.collapsed.has(index));
+        toggle.setAttribute('aria-expanded', String(!state.collapsed.has(index)));
+        $('toggle-all').textContent = state.collapsed.size === data.committees.length ? 'Expand all' : 'Collapse all';
+      });
+      $('proposal-dialog-close').addEventListener('click', () => proposalDialog.close());
+      proposalDialog.addEventListener('click', (event) => { if (event.target === proposalDialog) proposalDialog.close(); });
+      $('proposal-sheet-select').addEventListener('change', (event) => renderProposalSheet(event.target.value));
+      $('proposal-file-input').addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const request = ++proposalRequest;
+        $('proposal-status').textContent = `Reading ${file.name}…`;
+        try {
+          if (typeof XLSX === 'undefined') throw new Error('The spreadsheet reader is unavailable.');
+          const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+          if (request !== proposalRequest || !proposalDialog.open) return;
+          showProposalWorkbook(workbook, file.name);
+        } catch (error) {
+          if (request !== proposalRequest || !proposalDialog.open) return;
+          console.error('Could not read the selected proposal workbook:', error);
+          $('proposal-status').textContent = `Could not read ${file.name}: ${error.message}`;
+          $('proposal-file-pick').hidden = false;
+        }
+      });
+      $('toggle-all').addEventListener('click', () => {
+        if (state.collapsed.size === data.committees.length) state.collapsed.clear();
+        else data.committees.forEach((_, index) => state.collapsed.add(index));
+        renderTable();
+      });
+      document.addEventListener('keydown', (event) => {
+        const typing = /input|select|textarea/i.test(document.activeElement.tagName);
+        if (event.key === '/' && !typing) {
+          event.preventDefault();
+          search.focus();
+        } else if (event.key === 'Escape' && document.activeElement === search) {
+          search.value = '';
+          state.query = '';
+          renderTable();
+        }
+      });
+      // ---------- Live link to the Excel file ----------
+      const timeFmt = new Intl.DateTimeFormat('en-PH', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+      function setSync(kind, text) {
+        $('sync').className = `sync${kind ? ` is-${kind}` : ''}`;
+        $('sync-text').textContent = text;
+      }
+      let toastTimer;
+      function toast(text, isError) {
+        const el = $('toast');
+        el.textContent = text;
+        el.classList.toggle('is-error', !!isError);
+        el.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+      }
+
+      let loadedOnce = false;
+      // Parses the workbook bytes and repaints; returns false (keeping old numbers) if the file is mid-save or malformed
+      function applyWorkbook(buffer, sourceLabel) {
+        if (typeof XLSX === 'undefined') throw new Error('xlsx.full.min.js is missing next to index.html');
+        let next;
+        try {
+          next = parseWorkbook(XLSX.read(buffer, { type: 'array' }));
+        } catch (error) {
+          console.warn('Could not read workbook:', error);
+          setSync('error', `Couldn't read Excel · keeping last numbers`);
+          return false;
+        }
+        const changed = JSON.stringify(next.committees) !== JSON.stringify(data.committees);
+        data = next;
+        if (data.reported.base !== undefined && Math.abs(data.reported.base - (data.base + data.optional)) > 0.01) {
+          console.warn(`Line items add up to ${money(data.base + data.optional)} but the sheet's GRAND TOTAL cell says ${money(data.reported.base)}.`);
+        }
+        renderEverything();
+        $('footer-source').textContent = `Source: ${sourceLabel}`;
+        if (changed && loadedOnce) {
+          toast(`Updated from Excel · ${timeFmt.format(new Date())}`);
+          document.querySelectorAll('.stat, .hero-total, .panel').forEach((el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+        }
+        loadedOnce = true;
+        return true;
+      }
+
+      // Mode 1: page served over http(s) next to the workbook — re-check it every few seconds
+      let lastSignature = null;
+      async function pollServer() {
+        // Unique query string so no server or proxy cache can hand back an older copy of the workbook
+        const url = `${encodeURI(SOURCE_FILE)}?t=${Date.now()}`;
+        try {
+          const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+          if (!head.ok) throw new Error(`HTTP ${head.status}`);
+          const headerSig = head.headers.get('etag') || head.headers.get('last-modified');
+          if (headerSig && headerSig === lastSignature) { setSync('live', `Live · Excel checked ${timeFmt.format(new Date())}`); return true; }
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const buffer = await res.arrayBuffer();
+          const signature = headerSig || `${buffer.byteLength}:${new Uint8Array(buffer).reduce((h, byte) => (h * 31 + byte) | 0, 7)}`;
+          if (signature !== lastSignature && applyWorkbook(buffer, SOURCE_FILE)) lastSignature = signature;
+          if (lastSignature === signature) setSync('live', `Live · Excel checked ${timeFmt.format(new Date())}`);
+          return true;
+        } catch (error) {
+          if (lastSignature) setSync('error', `Can't reach Excel file · retrying`);
+          return false;
+        }
+      }
+
+      // Mode 2: opened straight from disk — the viewer uploads the workbook into the page
+      async function loadPickedFile(file) {
+        const buffer = await file.arrayBuffer();
+        if (!applyWorkbook(buffer, file.name)) return;
+        setSync('', `Loaded ${file.name} · ${timeFmt.format(new Date())}`);
+        // Keep the workbook in this browser so a refresh shows it instead of the built-in snapshot
+        try {
+          let binary = '';
+          new Uint8Array(buffer).forEach((byte) => { binary += String.fromCharCode(byte); });
+          localStorage.setItem(SAVED_UPLOAD_KEY, JSON.stringify({ name: file.name, savedAt: Date.now(), data: btoa(binary) }));
+        } catch (error) {
+          toast('Loaded, but this browser could not save it · it will reset on refresh', true);
+        }
+      }
+
+      // Re-applies the workbook saved by loadPickedFile; returns false if there is none
+      function restoreSavedUpload() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(SAVED_UPLOAD_KEY) || 'null');
+          if (!saved) return false;
+          const bytes = Uint8Array.from(atob(saved.data), (char) => char.charCodeAt(0));
+          if (!applyWorkbook(bytes.buffer, saved.name)) return false;
+          setSync('', `Showing ${saved.name} · loaded ${new Intl.DateTimeFormat('en-PH', { dateStyle: 'medium', timeStyle: 'short' }).format(saved.savedAt)}`);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      // Server mode: the picked workbook is uploaded and replaces the one every viewer reads
+      let serverMode = false;
+      const UPLOAD_URL = 'upload.php';
+      async function uploadWorkbook(file) {
+        if (!/\.xlsx$/i.test(file.name)) { toast('Please choose an .xlsx workbook', true); return; }
+        let passcode = '';
+        try { passcode = sessionStorage.getItem('evraa-upload-passcode') || ''; } catch (error) { /* storage blocked */ }
+        if (!passcode) passcode = window.prompt('Upload passcode') || '';
+        if (!passcode) return;
+        const button = $('upload-excel');
+        button.disabled = true;
+        button.textContent = 'Uploading…';
+        try {
+          const body = new FormData();
+          body.append('passcode', passcode);
+          body.append('workbook', file);
+          const res = await fetch(UPLOAD_URL, { method: 'POST', body, cache: 'no-store' });
+          const result = await res.json().catch(() => ({ ok: false, message: `Upload failed (HTTP ${res.status})` }));
+          if (res.status === 403) { try { sessionStorage.removeItem('evraa-upload-passcode'); } catch (error) { /* ignore */ } }
+          if (!res.ok || !result.ok) throw new Error(result.message || `Upload failed (HTTP ${res.status})`);
+          try { sessionStorage.setItem('evraa-upload-passcode', passcode); } catch (error) { /* ignore */ }
+          lastSignature = null;
+          await pollServer();
+          toast(`Uploaded ${file.name} · ${timeFmt.format(new Date())}`);
+        } catch (error) {
+          toast(error.message, true);
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Upload Excel file';
+        }
+      }
+      $('upload-excel').addEventListener('click', () => $('file-input').click());
+
+      $('file-input').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        event.target.value = '';
+        if (!file) return;
+        if (serverMode) uploadWorkbook(file); else loadPickedFile(file);
+      });
+
+      // Drag-and-drop the workbook anywhere on the page
+      let dragDepth = 0;
+      document.addEventListener('dragenter', (event) => { if ([...event.dataTransfer.types].includes('Files')) { dragDepth++; document.body.classList.add('dragging'); } });
+      document.addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; document.body.classList.remove('dragging'); } });
+      document.addEventListener('dragover', (event) => event.preventDefault());
+      document.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        dragDepth = 0;
+        document.body.classList.remove('dragging');
+        const item = [...event.dataTransfer.items].find((entry) => entry.kind === 'file');
+        if (!item) return;
+        if (serverMode) uploadWorkbook(item.getAsFile()); else loadPickedFile(item.getAsFile());
+      });
+
+      renderEverything();
+      // Let the panels rise in first, then grow the bars from zero
+      setTimeout(() => document.body.classList.remove('is-loading'), reduceMotion ? 0 : 450);
+      (async () => {
+        if (location.protocol.startsWith('http') && await pollServer()) {
+          serverMode = true;
+          $('upload-excel').title = 'Upload a new EVRAA 2027 Final Summary Fin.xlsx — everyone viewing this page updates';
+          $('upload-excel').hidden = false;
+          $('drop-veil').textContent = 'Drop the Excel file to upload it';
+          setInterval(pollServer, POLL_MS);
+          return;
+        }
+        $('upload-excel').hidden = false;
+        if (restoreSavedUpload()) return;
+        setSync('', 'Showing saved snapshot · not linked to Excel');
+        $('footer-source').textContent = 'Showing the saved snapshot. Use "Start Dashboard" or "Upload Excel file" for live numbers.';
+      })();
+    })();
+  </script>
+</body>
+</html>

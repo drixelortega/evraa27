@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f26">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EVRAA 2027">
+  <link rel="apple-touch-icon" href="evraa/images/icons/apple-touch-icon.png">
+  <meta name="description" content="Eastern Visayas Regional Athletic Association (EVRAA) 2027, March 31 – April 5, 2027, hosted by Calbayog and Catbalogan.">
+  <title>EVRAA 2027 | Calbayog </title>
+  <link rel="icon" href="evraa/images/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="evraa/images/icons/icon-192.png" sizes="192x192">
+  <link rel="stylesheet" href="evraa/assets/site.css?v=20261118">
+</head>
+<!-- Home page: the animated logo, the countdown, and a card for each section (drawn by evraa/assets/home.js from the menu in site.js).
+     The other pages are in the evraa folder; the billeting schools are on evraa/billeting.html. -->
+<body data-page="home" data-root="">
+  <main class="shell">
+    <script src="evraa/assets/data.js?v=20261118"></script>
+    <script>document.write('<script src="evraa/assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+    <script src="evraa/assets/site.js?v=20261118"></script>
+
+    <!-- The logo and the countdown share one row -->
+    <div class="home-top">
+    <section class="home-hero">
+      <h1 class="visually-hidden">EVRAA 2027 — Eastern Visayas Regional Athletic Association, March 31 – April 5, 2027, Calbayog City and Catbalogan City</h1>
+      <div class="logo-wrap">
+        <img class="hero-anim" src="evraa/images/Animated%20EVRAA27.gif?v=1" alt="EVRAA 2027 animated logo — One Region. One Spirit. One Victory. Calbayog | Catbalogan" width="400" height="711">
+      </div>
+    </section>
+
+    <section class="countdown" id="countdown" aria-labelledby="countdown-title">
+      <div>
+        <div class="countdown-label" id="countdown-label">Countdown to the opening ceremony</div>
+        <h2 id="countdown-title">The event starts on March 31, 2027, 2:00 PM</h2>
+        <p id="countdown-note">In Calbayog City</p>
+      </div>
+      <div class="units" id="countdown-units" aria-live="off">
+        <div class="unit"><strong id="cd-days">—</strong><span>Days</span></div>
+        <div class="unit"><strong id="cd-hours">—</strong><span>Hours</span></div>
+        <div class="unit"><strong id="cd-mins">—</strong><span>Min<span class="unit-long">ute</span>s</span></div>
+        <div class="unit"><strong id="cd-secs">—</strong><span>Sec<span class="unit-long">ond</span>s</span></div>
+      </div>
+    </section>
+    </div>
+
+    <nav aria-label="Sections">
+      <ul class="tab-cards" id="tab-cards"></ul>
+    </nav>
+
+    <!-- Acknowledgement: a carousel of logos, listed in ACKNOWLEDGEMENTS in evraa/assets/data.js -->
+    <section class="thanks" id="thanks" aria-labelledby="thanks-title" hidden>
+      <div class="section-head">
+        <div class="eyebrow">Acknowledgement</div>
+        <h2 id="thanks-title">With gratitude to</h2>
+        <p class="section-lead">The offices and partners that made the hosting of EVRAA 2027 in Calbayog City possible.</p>
+      </div>
+      <div class="logo-carousel" id="logo-carousel"></div>
+    </section>
+  </main>
+  <script src="evraa/assets/home.js?v=20261118"></script>
+</body>
+</html>

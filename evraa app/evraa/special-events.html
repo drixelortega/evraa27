@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f26">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EVRAA 2027">
+  <link rel="apple-touch-icon" href="../evraa/images/icons/apple-touch-icon.png">
+  <meta name="description" content="Ceremonies, celebrations and cultural showcases leading up to and during EVRAA 2027.">
+  <title>Special Events | EVRAA 2027</title>
+  <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
+  <link rel="stylesheet" href="assets/site.css?v=20261118">
+</head>
+<!-- Events are listed in assets/data.js (EVENTS) -->
+<body data-page="special-events" data-root="../">
+  <main class="shell">
+    <script src="assets/data.js?v=20261118"></script>
+    <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+    <script src="assets/site.js?v=20261118"></script>
+
+    <section class="page" aria-labelledby="events-title">
+      <div class="page-head">
+        <div class="eyebrow">Beyond the games</div>
+        <h2 id="events-title">Special Events</h2>
+        <p class="section-lead">Ceremonies, celebrations and cultural showcases leading up to and during EVRAA 2027.</p>
+      </div>
+      <ol class="timeline" id="event-list"></ol>
+    </section>
+  </main>
+  <script src="assets/special-events.js?v=20261118"></script>
+</body>
+</html>
