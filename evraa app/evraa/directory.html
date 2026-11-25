@@ -14,50 +14,46 @@
   <title>Directory | EVRAA 2027</title>
   <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
   <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
-  <link rel="stylesheet" href="assets/site.css?v=20261118">
+  <link rel="stylesheet" href="assets/site.css?v=20261125b">
 </head>
-<!-- Sections open by link, e.g. directory.html#hotlines. Places, hotlines and contacts are in assets/data.js. -->
+<!-- Sections open by link, e.g. directory.html#hotlines (the first tab, Hotlines, opens by default). Places, hotlines and contacts are in assets/data.js. -->
 <body data-page="directory" data-root="../">
   <main class="shell">
-    <script src="assets/data.js?v=20261118"></script>
+    <script src="assets/data.js?v=20261125b"></script>
     <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
-    <script src="assets/site.js?v=20261118"></script>
+    <script src="assets/site.js?v=20261125b"></script>
 
     <section class="page" aria-labelledby="directory-title">
       <div class="page-head">
         <div class="eyebrow">Getting around</div>
         <h2 id="directory-title">Directory</h2>
-        <p class="section-lead">Places to stay and eat, directions, shuttles, hotlines and contact persons in one place.</p>
+        <p class="section-lead">Hotlines, hotels and directions for delegations, officials and guests.</p>
       </div>
       <nav class="subtabs" id="subtabs" aria-label="Directory sections">
         <span class="tab-indicator" aria-hidden="true"></span>
+        <a class="tab" href="#hotlines" data-sub="hotlines">Hotlines</a>
         <a class="tab" href="#hotels" data-sub="hotels">Hotels / Accommodations</a>
-        <a class="tab" href="#food" data-sub="food">Food Hub / Restaurants</a>
         <a class="tab" href="#directions" data-sub="directions">Directions / Locations</a>
-        <a class="tab" href="#shuttle" data-sub="shuttle">Free Shuttle Service</a>
-        <a class="tab" href="#hotlines" data-sub="hotlines">HOTLINES</a>
-        <a class="tab" href="#contacts" data-sub="contacts">Contact Persons</a>
+        <a class="tab" href="#contacts" data-sub="contacts" data-soon-name="contact persons">Contact Persons</a>
+        <a class="tab" href="#shuttle" data-sub="shuttle" data-soon data-soon-name="free shuttle service">Free Shuttle Service</a>
+        <a class="tab" href="#food" data-sub="food" data-soon data-soon-name="food hub &amp; restaurant guide">Food Hub</a>
       </nav>
 
-      <div class="subpage" data-sub="hotels">
-        <div class="empty-state">
-          <span class="empty-icon" aria-hidden="true">H</span>
-          <h3>Hotel listings coming soon</h3>
-          <p>A list of hotels, inns and lodging houses in Calbayog City and Catbalogan City will be posted here for guests, parents and visiting officials.</p>
-          <a class="card-link" href="billeting.html">Delegations: see the 14 billeting schools <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-
-      <div class="subpage" data-sub="food" hidden>
-        <div class="empty-state">
-          <span class="empty-icon" aria-hidden="true">F</span>
-          <h3>Food hub &amp; restaurant guide coming soon</h3>
-          <p>Where to eat near the playing venues and billeting schools, including food stalls, restaurants and local delicacies from Calbayog and Catbalogan.</p>
-        </div>
+      <div class="subpage" data-sub="hotlines">
+        <a class="sos-hero" href="tel:911">
+          <span class="sos-hero-icon" aria-hidden="true">☎</span>
+          <span><strong>Emergency? Call 911</strong><small>National Emergency Hotline · police, fire and ambulance</small></span>
+          <span class="sos-hero-go" aria-hidden="true">Call</span>
+        </a>
+        <ul class="grid-cards" id="hotline-cards"></ul>
       </div>
 
       <div class="subpage" data-sub="directions" hidden>
         <ul class="grid-cards" id="direction-cards"></ul>
+      </div>
+
+      <div class="subpage" data-sub="contacts" hidden>
+        <div id="contacts-area"></div>
       </div>
 
       <div class="subpage" data-sub="shuttle" hidden>
@@ -75,16 +71,33 @@
         </ul>
       </div>
 
-      <div class="subpage" data-sub="hotlines" hidden>
-        <ul class="grid-cards" id="hotline-cards"></ul>
-        <p class="page-note">In an emergency, call 911 first.</p>
+      <!-- Hotels in Calbayog City: HOTELS in assets/data.js, photos in images/hotels (assets/directory.js). Tapping a card opens its details. -->
+      <div class="subpage" data-sub="hotels" hidden>
+        <p class="hotel-lead">Hotels, inns and resorts in Calbayog City for guests, parents and visiting officials. Tap a hotel for its rooms, rates and contact numbers. Delegations stay in the <a href="billeting.html">14 billeting schools</a>.</p>
+        <ul class="hotel-grid" id="hotel-cards"></ul>
+        <p class="page-note">Rates are as given by each hotel and may change; please confirm when booking.</p>
       </div>
 
-      <div class="subpage" data-sub="contacts" hidden>
-        <div id="contacts-area"></div>
+      <div class="subpage" data-sub="food" hidden>
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">F</span>
+          <h3>Food hub &amp; restaurant guide coming soon</h3>
+          <p>Where to eat near the playing venues and billeting schools, including food stalls, restaurants and local delicacies from Calbayog and Catbalogan.</p>
+        </div>
       </div>
+
     </section>
   </main>
-  <script src="assets/directory.js?v=20261118"></script>
+
+  <!-- Hotel details (filled by assets/directory.js); a bottom sheet on phones -->
+  <dialog class="sport-dialog hotel-dialog" id="hotel-dialog" aria-labelledby="hotel-dialog-title">
+    <div class="hotel-dialog-photo" id="hotel-dialog-photo"></div>
+    <div class="sport-dialog-head">
+      <div><div class="eyebrow" id="hotel-dialog-area"></div><h3 id="hotel-dialog-title"></h3></div>
+      <button type="button" class="dialog-close" id="hotel-dialog-close" data-close aria-label="Close">×</button>
+    </div>
+    <div class="hotel-dialog-body" id="hotel-dialog-body"></div>
+  </dialog>
+  <script src="assets/directory.js?v=20261125b"></script>
 </body>
 </html>

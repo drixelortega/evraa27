@@ -4,7 +4,7 @@
 // - Styles, scripts and images are shown from the saved copy at once and refreshed in the background.
 // - The admin page and anything PHP is never saved or intercepted.
 // Change VERSION after uploading new files if phones should drop their saved copies right away.
-const VERSION = 'evraa-v2';
+const VERSION = 'evraa-v11';
 const PAGES = `${VERSION}-pages`;
 const ASSETS = `${VERSION}-assets`;
 const ROOT = new URL('./', self.location).pathname;
@@ -17,7 +17,10 @@ const CORE = [
   'evraa/assets/announcements.js', 'evraa/assets/directory.js', 'evraa/assets/billeting.js', 'evraa/assets/medal-tally.js',
   'evraa/assets/games.js', 'evraa/assets/playing-venues.js', 'evraa/assets/special-events.js',
   'evraa/images/logo-header.png', 'evraa/images/icons/icon-192.png',
-  'evraa/images/Medal_Gold_Ribbon.png', 'evraa/images/Medal_Silver_Ribbon.png', 'evraa/images/Medal_Bronze_Ribbon.png',
+  'evraa/images/medals/gold.webp', 'evraa/images/medals/silver.webp', 'evraa/images/medals/bronze.webp',
+  // Delegation logos (Medal Tally, Home during the games); the animated logo is saved the first time Home is opened
+  ...['baybay-city', 'biliran', 'borongan', 'calbayog', 'catbalogan', 'eastern-samar', 'leyte', 'maasin', 'northern-samar', 'ormoc',
+    'samar', 'southern-leyte', 'tacloban'].map((name) => `evraa/images/logos/${name}.webp`),
 ];
 
 // Free hosts sometimes answer with a "checking your browser" page instead of the file; that must never be saved as the file
@@ -96,7 +99,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(networkFirst(request, page, PAGES, true));
   } else if (url.pathname.endsWith('/data-live.js')) {
     event.respondWith(networkFirst(request, url, ASSETS, false));
-  } else if (/\.(?:css|js|json)$/.test(url.pathname)) {
+  } else if (/\.(?:css|js|json|woff2)$/.test(url.pathname)) {
     event.respondWith(savedFirst(event, url, true));
   } else if (/\.(?:png|jpe?g|gif|webp|svg|ico)$/i.test(url.pathname)) {
     event.respondWith(savedFirst(event, url, false));

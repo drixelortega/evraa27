@@ -14,26 +14,40 @@
   <title>Games Schedule | EVRAA 2027</title>
   <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
   <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
-  <link rel="stylesheet" href="assets/site.css?v=20261118">
+  <link rel="stylesheet" href="assets/site.css?v=20261125b">
 </head>
 <!-- Sports and their schedules are in assets/data.js (SPORTS, SCHEDULE); the sport icons are in assets/site.js -->
 <body data-page="games" data-root="../">
   <main class="shell">
-    <script src="assets/data.js?v=20261118"></script>
+    <script src="assets/data.js?v=20261125b"></script>
     <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
-    <script src="assets/site.js?v=20261118"></script>
+    <script src="assets/site.js?v=20261125b"></script>
 
     <section class="page" aria-labelledby="games-title">
       <div class="page-head">
         <div class="eyebrow">The sports</div>
-        <h2 id="games-title">Sports contested</h2>
-        <p class="section-lead">Tap a sport to see its game schedule and playing venue.</p>
+        <h2 id="games-title">Games Schedule</h2>
+        <p class="section-lead">Tap a sport for its game schedule and playing venue, or switch to <a href="#by-day">By day</a> to see every game on one day.</p>
+      </div>
+      <!-- By sport: a card per sport; By day: every game of one day across all sports (games.js; #day-2027-04-01 opens that day) -->
+      <div class="view-switch" role="group" aria-label="Show the schedule">
+        <a class="view-btn" href="#by-sport" data-view="sport">By sport</a>
+        <a class="view-btn" href="#by-day" data-view="day">By day</a>
       </div>
       <div class="games-tools">
-        <input class="games-search" id="games-search" type="search" placeholder="Search sports" aria-label="Search sports">
+        <input class="games-search" id="games-search" type="search" placeholder="Search sports or teams" aria-label="Search sports or teams">
         <span class="chip" id="games-count"></span>
       </div>
-      <ul class="grid-cards" id="games-grid"></ul>
+      <p class="page-notice" id="games-notice" role="note" hidden></p>
+      <div id="games-views">
+      <div id="sport-view">
+        <ul class="grid-cards" id="games-grid"></ul>
+      </div>
+      <div id="day-view" hidden>
+        <nav class="day-tabs" id="day-tabs" aria-label="Game days"></nav>
+        <div id="day-list"></div>
+      </div>
+      </div>
     </section>
   </main>
 
@@ -41,14 +55,15 @@
     <div class="sport-dialog-head">
       <span class="sport-badge" id="sport-dialog-icon" aria-hidden="true"></span>
       <div><div class="eyebrow">Game schedule</div><h3 id="sport-dialog-title"></h3></div>
-      <button type="button" class="dialog-close" id="sport-dialog-close" aria-label="Close">×</button>
+      <button type="button" class="dialog-close" id="sport-dialog-close" data-close aria-label="Close">×</button>
     </div>
     <div id="sport-dialog-schedule"></div>
     <div class="sport-dialog-venue">
-      <div><span class="dialog-label">Playing venue</span><p id="sport-dialog-address"></p></div>
-      <a class="cta dialog-cta" id="sport-dialog-venue" href="playing-venues.html">Go to playing venue <span aria-hidden="true">→</span></a>
+      <span class="dialog-label">Playing venue</span>
+      <ul class="dialog-venues" id="sport-dialog-venues"></ul>
+      <a class="cta dialog-cta" id="sport-dialog-venue" href="playing-venues.html">See it on the venue map <span aria-hidden="true">→</span></a>
     </div>
   </dialog>
-  <script src="assets/games.js?v=20261118"></script>
+  <script src="assets/games.js?v=20261125b"></script>
 </body>
 </html>

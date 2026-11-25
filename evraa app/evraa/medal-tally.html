@@ -14,14 +14,14 @@
   <title>Medal Tally | EVRAA 2027</title>
   <link rel="icon" href="../evraa/images/icons/favicon-32.png" sizes="32x32">
   <link rel="icon" href="../evraa/images/icons/icon-192.png" sizes="192x192">
-  <link rel="stylesheet" href="assets/site.css?v=20261118">
+  <link rel="stylesheet" href="assets/site.css?v=20261125b">
 </head>
 <!-- Medal counts (TALLY) are edited on the admin page and saved in assets/data-live.js -->
 <body data-page="medal-tally" data-root="../">
   <main class="shell">
-    <script src="assets/data.js?v=20261118"></script>
+    <script src="assets/data.js?v=20261125b"></script>
     <script>document.write('<script src="assets/data-live.js?t=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
-    <script src="assets/site.js?v=20261118"></script>
+    <script src="assets/site.js?v=20261125b"></script>
 
     <section class="page" aria-labelledby="medals-title">
       <div class="page-head">
@@ -32,13 +32,13 @@
       <div id="tally-top"></div>
       <div class="table-card tally">
         <table>
-          <thead><tr><th class="rank"><span class="th-long">Rank</span><span aria-hidden="true" class="th-short">#</span></th><th>Delegation</th><th class="num"><span class="th-long">Gold</span><img class="th-coin" src="images/Medal_Gold_Ribbon.png" alt="" width="372" height="521"></th><th class="num"><span class="th-long">Silver</span><img class="th-coin" src="images/Medal_Silver_Ribbon.png" alt="" width="372" height="521"></th><th class="num"><span class="th-long">Bronze</span><img class="th-coin" src="images/Medal_Bronze_Ribbon.png" alt="" width="372" height="521"></th><th class="num">Total</th><th class="bar-col"><span class="visually-hidden">Medal share</span></th></tr></thead>
+          <thead><tr><th class="rank"><span class="th-long">Rank</span><span aria-hidden="true" class="th-short">#</span></th><th>Delegation</th><th class="num"><span class="th-long">Gold</span><img class="th-coin" src="images/medals/gold.webp" alt="" width="120" height="168"></th><th class="num"><span class="th-long">Silver</span><img class="th-coin" src="images/medals/silver.webp" alt="" width="120" height="168"></th><th class="num"><span class="th-long">Bronze</span><img class="th-coin" src="images/medals/bronze.webp" alt="" width="120" height="168"></th><th class="num">Total</th><th class="bar-col"><span class="visually-hidden">Medal share</span></th></tr></thead>
           <tbody id="tally-rows"></tbody>
         </table>
       </div>
-      <p class="page-note" id="tally-hint">Tap the ☆ beside your delegation to pin it: its row is highlighted and its standing stays on top.</p>
+      <p class="page-note" id="tally-hint"><a href="../index.html#team">Pick your delegation on the Home page</a> to see its standing on top and its row highlighted.</p>
     </section>
   </main>
-  <script src="assets/medal-tally.js?v=20261118"></script>
+  <script src="assets/medal-tally.js?v=20261125b"></script>
 </body>
 </html>

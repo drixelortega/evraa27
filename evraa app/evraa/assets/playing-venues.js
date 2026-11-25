@@ -28,7 +28,7 @@
     const places = venues.length
       ? `<ul class="venue-places">${venues.map(([venue], v) => {
         const pin = pinsOf[i][v];
-        return `<li>${pin > -1 ? `<button type="button" class="venue-place" data-pin="${pin}">${esc(venue)}</button>` : `${esc(venue)} <span class="venue-flag">Pin to follow</span>`}</li>`;
+        return `<li>${pin > -1 ? `<button type="button" class="venue-place" data-pin="${pin}">${esc(venue)}</button>` : `${esc(venue)} <span class="venue-flag">Map pin coming soon</span>`}</li>`;
       }).join('')}</ul>`
       : tba;
     return `<tr data-sport="${i}"><td>${name}</td><td>${places}</td></tr>`;
